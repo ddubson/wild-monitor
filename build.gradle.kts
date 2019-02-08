@@ -34,6 +34,7 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
 
 application {

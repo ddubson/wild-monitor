@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 @RequestMapping("/projects")
@@ -19,4 +20,6 @@ class CreateNewProjectController {
 
 data class NewProjectRequest(val projectName: String)
 
-data class NewProjectResponse(val projectName: String)
+data class NewProjectResponse(val projectName: String) {
+    val id: UUID = UUID.randomUUID()
+}

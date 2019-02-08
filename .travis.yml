@@ -7,6 +7,6 @@ jobs:
   include:
     - stage: test
       script:
-        - ./gradlew --no-daemon test
+        - ./gradlew --no-daemon --info test
 stages:
   - name: test

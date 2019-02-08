@@ -28,6 +28,7 @@ class CreateNewProjectControllerTest {
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk)
+                .andExpect(jsonPath("$.id").isNotEmpty)
                 .andExpect(jsonPath("$.projectName").value(projectName))
     }
 }
