@@ -1,0 +1,12 @@
+sudo: false
+language: java
+jdk: openjdk8
+install:
+  - echo "skip default gradlew assemble"
+jobs:
+  include:
+    - stage: test
+      script:
+        - ./gradlew test
+stages:
+  - name: test
