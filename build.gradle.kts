@@ -39,7 +39,7 @@ dependencies {
 }
 
 application {
-    mainClassName = "wild.monitor.AppKt"
+    mainClassName = "wild.monitor.WildMonitorAppKt"
 }
 
 val compileKotlin by tasks.getting(KotlinCompile::class) {

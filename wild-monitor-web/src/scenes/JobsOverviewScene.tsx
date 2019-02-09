@@ -11,12 +11,18 @@ interface Job {
     status: string,
 }
 
+interface Event {
+    data: string,
+}
+
 interface JobsOverviewSceneProps {
     location: any,
 }
+
 interface JobsOverviewSceneState {
     jobs: Job[],
     projectKey: string,
+    events: Event[],
 }
 
 const renderJob = (job: Job) =>
@@ -28,16 +34,26 @@ const renderJob = (job: Job) =>
     </div>;
 
 class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOverviewSceneState> {
+    eventSource: EventSource;
+
     constructor(props: JobsOverviewSceneProps) {
         super(props);
+        this.eventSource = new EventSource(`${wildMonitorService.defaults.baseURL}/events`);
         const params = new URLSearchParams(this.props.location.search);
         this.state = {
             projectKey: params.get('projectKey'),
-            jobs: []
+            jobs: [],
+            events: []
         }
     }
 
     componentDidMount(): void {
+        this.eventSource.onmessage = (event) => {
+            this.setState({
+                events: [...this.state.events, { data: event.data }]
+            })
+        };
+
         wildMonitorService.get(`/jobs?projectKey=${this.state.projectKey}`)
             .then((response: AxiosResponse) => response.data)
             .then((jobResponseArray: any) => {
@@ -59,6 +75,10 @@ class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOvervi
                 <nav><Link to={"/"}>Back to Projects</Link></nav>
                 <section>
                     {this.state.jobs.map(renderJob)}
+                </section>
+                <section>
+                    <h4>Events</h4>
+                    {this.state.events.map((event: Event) => <div>{event.data}</div>)}
                 </section>
             </div>
         )
