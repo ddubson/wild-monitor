@@ -5,6 +5,11 @@ import java.util.*
 class InMemoryJobRepository: JobRepository {
     private val jobs: MutableSet<Job> = mutableSetOf()
 
+    override fun updateJob(jobId: String, updatedJob: Job) {
+        jobs.remove(jobs.find { jobId == it.id.toString() })
+        jobs.add(updatedJob)
+    }
+
     override fun getJobsByProjectKey(projectKey: String): List<Job> {
         return jobs.filter { it.projectKey == projectKey }
     }

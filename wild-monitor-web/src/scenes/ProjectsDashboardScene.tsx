@@ -23,8 +23,8 @@ const renderProject = (project: Project): JSX.Element =>
         <div className="card-body">
             <h5 className="card-title">{project.projectName}</h5>
             <h6 className="card-subtitle mb-2 text-muted">{project.id}</h6>
-            <Link to={`/jobs?projectKey=${project.projectKey}`}>
-                <a href="#" className="card-link">View Jobs</a>
+            <Link to={`/jobs?projectKey=${project.projectKey}`} className="card-link">
+                View Jobs
             </Link>
         </div>
     </div>;

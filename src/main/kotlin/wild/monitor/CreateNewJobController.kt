@@ -14,29 +14,17 @@ class CreateNewJobController(val projectRepository: ProjectRepository,
                              val jobRepository: JobRepository) {
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_UTF8_VALUE],
             produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
-    fun createANewJob(@RequestBody newJobRequest: NewJobRequest): ResponseEntity<NewJobResponse> {
+    fun createANewJob(@RequestBody newJobRequest: JobRequest): ResponseEntity<JobResponse> {
         if (!projectRepository.existsByProjectKey(newJobRequest.projectKey)) {
             throw ProjectDoesNotExistException()
         }
 
-        return ResponseEntity.ok(NewJobResponse.fromJob(jobRepository.newJob(newJobRequest.projectKey)))
+        return ResponseEntity.ok(JobResponse.fromJob(jobRepository.newJob(newJobRequest.projectKey)))
     }
 
     @ExceptionHandler(ProjectDoesNotExistException::class)
     fun projectDoesNotExistException(e: ProjectDoesNotExistException): ResponseEntity<NewJobErrorResponse> {
         return ResponseEntity.badRequest().body(NewJobErrorResponse(e.message ?: "Project does not exist."))
-    }
-}
-
-data class NewJobRequest(val projectKey: String)
-
-data class NewJobResponse(val projectKey: String,
-                          val id: String,
-                          val status: JobStatus) {
-    companion object {
-        fun fromJob(job: Job): NewJobResponse = NewJobResponse(id = job.id.toString(),
-                status = job.status,
-                projectKey = job.projectKey)
     }
 }
 

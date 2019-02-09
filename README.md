@@ -90,3 +90,21 @@ Response (sample)
     "projectKey": "473e185500afecac3eb5bddd06b38a4382905d86e42eef5847111207af3b4b638005224305fa6378c80da57535cddd97bfd05d7f90118c5c31f603a7d5668787"
 }
 ```
+
+### Update job status
+
+Request (sample)
+
+```bash
+http PATCH :8080/jobs/2a7f1c57-d420-472a-84b5-8034c3b199f6 newStatus=STARTED
+```
+
+Response (sample)
+
+```json
+{
+    "id": "2a7f1c57-d420-472a-84b5-8034c3b199f6",
+    "jobStatus": "STARTED",
+    "projectKey": "473e185500afecac3eb5bddd06b38a4382905d86e42eef5847111207af3b4b638005224305fa6378c80da57535cddd97bfd05d7f90118c5c31f603a7d5668787"
+}
+```
