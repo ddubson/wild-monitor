@@ -15,21 +15,30 @@ interface JobsOverviewSceneProps {
     location: any,
 }
 interface JobsOverviewSceneState {
-    jobs: Job[]
+    jobs: Job[],
+    projectKey: string,
 }
 
+const renderJob = (job: Job) =>
+    <div className="card" key={shortid.generate()} style={{width: "18rem"}}>
+        <div className="card-body">
+            <h5 className="card-title">{job.status}</h5>
+            <h6 className="card-subtitle mb-2 text-muted">{job.id}</h6>
+        </div>
+    </div>;
 
 class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOverviewSceneState> {
     constructor(props: JobsOverviewSceneProps) {
         super(props);
+        const params = new URLSearchParams(this.props.location.search);
         this.state = {
+            projectKey: params.get('projectKey'),
             jobs: []
         }
     }
 
     componentDidMount(): void {
-        const params = new URLSearchParams(this.props.location.search);
-        wildMonitorService.get(`/jobs?projectKey=${params.get('projectKey')}`)
+        wildMonitorService.get(`/jobs?projectKey=${this.state.projectKey}`)
             .then((response: AxiosResponse) => response.data)
             .then((jobResponseArray: any) => {
                 this.setState({
@@ -47,8 +56,10 @@ class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOvervi
     render(): React.ReactNode {
         return (
             <div>
-                <div><Link to={"/"}>Back to Projects</Link></div>
-                {this.state.jobs.map(job => <div key={shortid.generate()}>{job.id}: {job.status}: {job.projectKey}</div>)}
+                <nav><Link to={"/"}>Back to Projects</Link></nav>
+                <section>
+                    {this.state.jobs.map(renderJob)}
+                </section>
             </div>
         )
     }

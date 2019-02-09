@@ -3,7 +3,7 @@ import * as React from "react";
 import {AxiosResponse} from "axios";
 import * as shortid from "shortid";
 import wildMonitorService from "../App.config";
-import {Link, NavLink} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 interface Project {
     id: string
@@ -19,10 +19,14 @@ interface AppState {
 }
 
 const renderProject = (project: Project): JSX.Element =>
-    <div key={shortid.generate()}>
-        {project.id} : {project.projectName}
-        <div style={{ "fontSize": "10px", color: "lightgrey"}}>key: {project.projectKey}</div>
-        <Link to={`/jobs?projectKey=${project.projectKey}`}><button>View Jobs</button></Link>
+    <div className="card" key={shortid.generate()} style={{width: "18rem"}}>
+        <div className="card-body">
+            <h5 className="card-title">{project.projectName}</h5>
+            <h6 className="card-subtitle mb-2 text-muted">{project.id}</h6>
+            <Link to={`/jobs?projectKey=${project.projectKey}`}>
+                <a href="#" className="card-link">View Jobs</a>
+            </Link>
+        </div>
     </div>;
 
 class ProjectsDashboardScene extends PureComponent<AppProps, AppState> {

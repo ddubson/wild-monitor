@@ -8,10 +8,10 @@ class App extends PureComponent {
     public render(): JSX.Element {
         return (
             <Router>
-                <section>
+                <div className="container">
                     <Route path={"/"} exact={true} component={ProjectsDashboardScene}/>
                     <Route path={"/jobs"} component={JobsOverviewScene}/>
-                </section>
+                </div>
             </Router>
         );
     }
