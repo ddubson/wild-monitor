@@ -12,21 +12,11 @@ import org.springframework.web.bind.annotation.RestController
 class CreateNewProjectController(val projectRepository: ProjectRepository) {
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_UTF8_VALUE],
             produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
-    fun createANewProject(@RequestBody newProjectRequest: NewProjectRequest): ResponseEntity<NewProjectResponse> {
+    fun createANewProject(@RequestBody newProjectRequest: NewProjectRequest): ResponseEntity<ProjectResponse> {
         return ResponseEntity.ok(
-                NewProjectResponse.fromProject(projectRepository.addProject(newProjectRequest.projectName)))
+                ProjectResponse.fromProject(projectRepository.addProject(newProjectRequest.projectName)))
     }
 }
 
 data class NewProjectRequest(val projectName: String)
 
-data class NewProjectResponse(val id: String,
-                              val projectName: String,
-                              val projectKey: String) {
-    companion object {
-        fun fromProject(project: Project): NewProjectResponse =
-                NewProjectResponse(id = project.id.toString(),
-                        projectName = project.projectName,
-                        projectKey = project.projectKey)
-    }
-}
