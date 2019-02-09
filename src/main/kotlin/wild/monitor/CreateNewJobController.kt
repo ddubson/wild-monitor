@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.util.*
 
 @RestController
 @RequestMapping("/jobs")
-class CreateNewJobController(val projectRepository: ProjectRepository) {
+class CreateNewJobController(val projectRepository: ProjectRepository,
+                             val jobRepository: JobRepository) {
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_UTF8_VALUE],
             produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
     fun createANewJob(@RequestBody newJobRequest: NewJobRequest): ResponseEntity<NewJobResponse> {
@@ -19,7 +19,7 @@ class CreateNewJobController(val projectRepository: ProjectRepository) {
             throw ProjectDoesNotExistException()
         }
 
-        return ResponseEntity.ok(NewJobResponse(newJobRequest.projectKey))
+        return ResponseEntity.ok(NewJobResponse.fromJob(jobRepository.newJob(newJobRequest.projectKey)))
     }
 
     @ExceptionHandler(ProjectDoesNotExistException::class)
@@ -30,9 +30,14 @@ class CreateNewJobController(val projectRepository: ProjectRepository) {
 
 data class NewJobRequest(val projectKey: String)
 
-data class NewJobResponse(val projectKey: String) {
-    val id: String = UUID.randomUUID().toString()
-    val jobStatus: JobStatus = JobStatus.PENDING
+data class NewJobResponse(val projectKey: String,
+                          val id: String,
+                          val status: JobStatus) {
+    companion object {
+        fun fromJob(job: Job): NewJobResponse = NewJobResponse(id = job.id.toString(),
+                status = job.status,
+                projectKey = job.projectKey)
+    }
 }
 
 data class NewJobErrorResponse(val message: String)

@@ -9,5 +9,8 @@ class AppConfig {
     fun projectRepository(): ProjectRepository = InMemoryProjectRepository()
 
     @Bean
+    fun jobRepository(): JobRepository = InMemoryJobRepository()
+
+    @Bean
     fun dataStore(): InMemoryDataStore = InMemoryDataStore()
 }

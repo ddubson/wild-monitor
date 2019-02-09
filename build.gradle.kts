@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.kotlin.jvm").version("1.3.21")
-    id("org.jetbrains.kotlin.plugin.spring").version("1.3.20")
+    id("org.jetbrains.kotlin.plugin.spring").version("1.3.21")
     id("org.springframework.boot").version("2.1.2.RELEASE")
     id("io.spring.dependency-management").version("1.0.6.RELEASE")
     application

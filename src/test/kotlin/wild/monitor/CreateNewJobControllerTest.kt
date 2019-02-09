@@ -14,8 +14,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(CreateNewJobController::class)
-@Import(InMemoryProjectRepository::class)
-internal class CreateNewJobControllerTest {
+@Import(InMemoryProjectRepository::class, InMemoryJobRepository::class)
+internal class CreateNewJobControllerTest: WildMonitorTester() {
     @Autowired
     lateinit var projectRepository: ProjectRepository
 
@@ -24,7 +24,7 @@ internal class CreateNewJobControllerTest {
 
     @Test
     fun createNewJob_whenProvidedAnExistingProjectKey_createsANewJobWithPendingStatus() {
-        withExistingProject("My Example Project") { projectKey ->
+        withExistingProject(projectRepository, "My Example Project") { projectKey ->
             val jobStatus = "PENDING"
             val requestBody = """
                 { "projectKey": "$projectKey" }
@@ -35,7 +35,7 @@ internal class CreateNewJobControllerTest {
                     .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                     .andExpect(status().isOk)
                     .andExpect(jsonPath("$.id").isNotEmpty)
-                    .andExpect(jsonPath("$.jobStatus").value(jobStatus))
+                    .andExpect(jsonPath("$.status").value(jobStatus))
                     .andExpect(jsonPath("$.projectKey").value(projectKey))
         }
     }
@@ -52,10 +52,5 @@ internal class CreateNewJobControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isBadRequest)
                 .andExpect(jsonPath("$.message").value("Project does not exist."))
-    }
-
-    private fun withExistingProject(projectName: String, existingProject: (projectKey: String) -> Unit) {
-        val project = this.projectRepository.addProject(projectName)
-        existingProject(project.projectKey)
     }
 }
