@@ -2,11 +2,20 @@ sudo: false
 language: java
 jdk: openjdk8
 install:
-  - echo "skip default gradlew assemble"
+  - npm i -g yarn
+cache:
+  yarn: true
+  directories:
+    - wild-monitor-web/node_modules
+    - ~/wild-monitor-web/.cache
 jobs:
   include:
+    - stage: wild-monitor-web-build
+      script:
+        - yarn build
     - stage: test
       script:
         - ./gradlew --no-daemon --info test
 stages:
   - name: test
+  - name: wild-monitor-web-build
