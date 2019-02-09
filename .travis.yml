@@ -1,21 +1,28 @@
 sudo: false
-language: java
-jdk: openjdk8
-install:
-  - npm i -g yarn
-cache:
-  yarn: true
-  directories:
-    - wild-monitor-web/node_modules
-    - ~/wild-monitor-web/.cache
+
 jobs:
   include:
     - stage: wild-monitor-web-build
+      name: "Build Web Client"
+      language: node_js
+      node_js:
+        - '11'
+      install:
+        - npm i -g yarn
       script:
+        - cd wild-monitor-web
+        - yarn install
         - yarn build
-    - stage: test
+      cache:
+        yarn: true
+        directories:
+          - wild-monitor-web/node_modules
+          - ~/wild-monitor-web/.cache
+    - stage: wild-monitor-service-build
+      name: "Build Service"
+      language: java
+      jdk: openjdk8
+      install:
+        - echo "skip assemble"
       script:
-        - ./gradlew --no-daemon --info test
-stages:
-  - name: test
-  - name: wild-monitor-web-build
+        - ./gradlew --no-daemon build
