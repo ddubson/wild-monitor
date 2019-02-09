@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
@@ -13,6 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(CreateNewProjectController::class)
+@Import(InMemoryProjectRepository::class)
 class CreateNewProjectControllerTest {
     @Autowired
     lateinit var mockMvc: MockMvc
@@ -29,6 +31,7 @@ class CreateNewProjectControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.id").isNotEmpty)
+                .andExpect(jsonPath("$.projectKey").isNotEmpty)
                 .andExpect(jsonPath("$.projectName").value(projectName))
     }
 }
