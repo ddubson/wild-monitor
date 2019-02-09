@@ -12,9 +12,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @ExtendWith(SpringExtension::class)
-@WebMvcTest(GetJobController::class)
+@WebMvcTest(GetJobByIdController::class)
 @Import(InMemoryJobRepository::class, InMemoryProjectRepository::class)
-class GetJobControllerTest: WildMonitorTester() {
+class GetJobByIdControllerTest: WildMonitorTester() {
     @Autowired
     lateinit var projectRepository: ProjectRepository
 

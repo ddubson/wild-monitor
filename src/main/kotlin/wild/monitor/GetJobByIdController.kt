@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class GetJobController(val jobRepository: JobRepository) {
+class GetJobByIdController(val jobRepository: JobRepository) {
     @GetMapping("/jobs/{jobId}", produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
     fun getExistingJob(@PathVariable("jobId") jobId: String): ResponseEntity<JobResponse> {
         return ResponseEntity.ok(JobResponse.fromJob(jobRepository.getJobById(jobId)))
