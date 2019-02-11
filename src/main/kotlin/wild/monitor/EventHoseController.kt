@@ -17,7 +17,7 @@ class EventHoseController {
             for (i in 0..499) {
                 try {
                     emitter.send(LocalTime.now().toString(), MediaType.TEXT_PLAIN)
-                    Thread.sleep(500)
+                    Thread.sleep(5000)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     emitter.completeWithError(e)

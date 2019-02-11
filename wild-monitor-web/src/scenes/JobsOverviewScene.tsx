@@ -50,7 +50,7 @@ class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOvervi
     componentDidMount(): void {
         this.eventSource.onmessage = (event) => {
             this.setState({
-                events: [...this.state.events, { data: event.data }]
+                events: [...this.state.events, {data: event.data}]
             })
         };
 
@@ -73,10 +73,16 @@ class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOvervi
         return (
             <div>
                 <nav><Link to={"/"}>Back to Projects</Link></nav>
-                <section>
-                    {this.state.jobs.map(renderJob)}
+                <section style={{marginTop: "15px"}}>
+                    {this.state.jobs.length !== 0 ? this.state.jobs.map(renderJob) : "No jobs yet."}
                 </section>
-                <section>
+                <section style={{marginTop: "15px"}}>
+                    <p>To create a job, execute the following:</p>
+                        <code>
+                            http POST :8080/jobs projectKey={this.state.projectKey}
+                        </code>
+                </section>
+                <section style={{marginTop: "15px"}}>
                     <h4>Events</h4>
                     {this.state.events.map((event: Event) => <div>{event.data}</div>)}
                 </section>
