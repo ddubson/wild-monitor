@@ -25,10 +25,19 @@ interface JobsOverviewSceneState {
     events: Event[],
 }
 
+const colorMap = (status: string) => {
+    switch(status) {
+        case "PENDING": return "yellow";
+        case "STARTED": return "orange";
+        default:
+            return "yellow";
+    }
+};
+
 const renderJob = (job: Job) =>
-    <div className="card" key={shortid.generate()} style={{width: "18rem"}}>
+    <div className="card" key={shortid.generate()} style={{marginTop: "5px", borderColor: "lightgreen", backgroundColor: "black",width: "18rem"}}>
         <div className="card-body">
-            <h5 className="card-title">{job.status}</h5>
+            <h5 className="card-title" style={{color: colorMap(job.status)}}>{job.status}</h5>
             <h6 className="card-subtitle mb-2 text-muted">{job.id}</h6>
         </div>
     </div>;
@@ -78,9 +87,9 @@ class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOvervi
                 </section>
                 <section style={{marginTop: "15px"}}>
                     <p>To create a job, execute the following:</p>
-                        <code>
-                            http POST :8080/jobs projectKey={this.state.projectKey}
-                        </code>
+                    <code>
+                        http POST {wildMonitorService.defaults.baseURL}/jobs projectKey={this.state.projectKey}
+                    </code>
                 </section>
                 <section style={{marginTop: "15px"}}>
                     <h4>Events</h4>
