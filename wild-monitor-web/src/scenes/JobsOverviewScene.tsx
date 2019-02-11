@@ -78,6 +78,10 @@ class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOvervi
             })
     }
 
+    componentWillUnmount(): void {
+        this.eventSource.close();
+    }
+
     render(): React.ReactNode {
         return (
             <div>
