@@ -1,4 +1,4 @@
-package wild.monitor
+package wild.monitor.controllers
 
 data class JobRequest(val projectKey: String)
 

@@ -1,4 +1,4 @@
-package wild.monitor
+package wild.monitor.controllers
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -9,6 +9,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import wild.monitor.*
+import wild.monitor.repositories.InMemoryJobRepository
+import wild.monitor.repositories.InMemoryProjectRepository
+import wild.monitor.repositories.JobRepository
+import wild.monitor.repositories.ProjectRepository
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(GetJobsByProjectController::class)

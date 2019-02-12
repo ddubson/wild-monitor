@@ -1,4 +1,4 @@
-package wild.monitor
+package wild.monitor.models
 
 import com.google.common.hash.Hashing
 import java.nio.charset.StandardCharsets

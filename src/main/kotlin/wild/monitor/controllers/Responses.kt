@@ -1,4 +1,6 @@
-package wild.monitor
+package wild.monitor.controllers
+
+import wild.monitor.models.Project
 
 data class ProjectResponse(val id: String,
                            val projectName: String,

@@ -1,4 +1,4 @@
-package wild.monitor
+package wild.monitor.models
 
 enum class JobStatus {
     PENDING,

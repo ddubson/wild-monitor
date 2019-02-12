@@ -1,4 +1,4 @@
-package wild.monitor
+package wild.monitor.models
 
 import java.util.*
 

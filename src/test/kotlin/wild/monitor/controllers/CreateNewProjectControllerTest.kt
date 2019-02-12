@@ -1,4 +1,4 @@
-package wild.monitor
+package wild.monitor.controllers
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import wild.monitor.repositories.InMemoryProjectRepository
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(CreateNewProjectController::class)

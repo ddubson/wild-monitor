@@ -1,4 +1,6 @@
-package wild.monitor
+package wild.monitor.repositories
+
+import wild.monitor.models.Project
 
 interface ProjectRepository {
     fun existsByProjectKey(projectKey: String): Boolean

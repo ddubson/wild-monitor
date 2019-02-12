@@ -1,11 +1,19 @@
-package wild.monitor
+package wild.monitor.repositories
 
+import wild.monitor.models.Job
+import wild.monitor.models.JobStatus
+import wild.monitor.controllers.ProjectDoesNotExistException
 import java.util.*
 
 class InMemoryJobRepository(val projectRepository: ProjectRepository): JobRepository {
     private val jobs: MutableSet<Job> = mutableSetOf()
 
-    override fun updateJob(jobId: String, updatedJob: Job) {
+    override fun updateJobStatus(jobId: String, newStatus: JobStatus) {
+        val job = getJobById(jobId)
+        val updatedJob = job.copy(
+                id = job.id,
+                status = newStatus,
+                projectKey = job.projectKey)
         jobs.remove(jobs.find { jobId == it.id.toString() })
         jobs.add(updatedJob)
     }

@@ -1,4 +1,4 @@
-package wild.monitor
+package wild.monitor.controllers
 
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping

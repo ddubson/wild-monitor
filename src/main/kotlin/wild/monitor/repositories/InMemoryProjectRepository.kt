@@ -1,4 +1,6 @@
-package wild.monitor
+package wild.monitor.repositories
+
+import wild.monitor.models.Project
 
 class InMemoryProjectRepository : ProjectRepository {
     private val projects: MutableSet<Project> = mutableSetOf()
