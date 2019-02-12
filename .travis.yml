@@ -2,27 +2,33 @@ sudo: false
 
 jobs:
   include:
-    - stage: wild-monitor-web-build
-      name: "Build Web Client"
-      language: node_js
-      node_js:
-        - '11'
-      install:
-        - npm i -g yarn
-      script:
-        - cd wild-monitor-web
-        - yarn install --frozen-lockfile
-        - yarn build
-      cache:
-        yarn: true
-        directories:
-          - wild-monitor-web/node_modules
-          - ~/wild-monitor-web/.cache
-    - stage: wild-monitor-service-build
-      name: "Build Service"
+    - stage: wild-monitor-build-and-deploy
       language: java
       jdk: openjdk8
+      env:
+        - NODE_VERSION="11.9.0"
+      before_install:
+        - nvm install $NODE_VERSION
       install:
-        - echo "skip assemble"
+        - npm i -g npm yarn
+      before_script:
+        - export PATH=$PATH:$TRAVIS_BUILD_DIR/wild-monitor-web/node_modules/.bin
+        - cd $TRAVIS_BUILD_DIR/wild-monitor-web
+        - yarn install
       script:
-        - ./gradlew --no-daemon build
+        - yarn build:prod
+        - cd $TRAVIS_BUILD_DIR
+        - ./gradlew clean build --no-daemon
+      deploy:
+        provider: cloudfoundry
+        api: https://api.run.pcfone.io
+        organization: pivot-ddubson
+        space: development
+        manifest: "."
+        on:
+          branch: master
+        username:
+          secure: n8Bzjp2yWpF6cJaHykkooFXMgmw0l0vluT84KNpECX0ppk5dTIGZjdAdAe4L0/dQ34w0sscJ/kLRjI647e13vXiEbWF30vlFd+Fb3sr0PcPPwQA0dffKOvPyHrj+3ub8F0QF3J29ewhXcjsl+Ng8kh715vHYf/HSUbeBtha3479DKC9pFoyxaQ4TvLoMismOj60+gdUvKmWHpBEYnAfWuAisHhyEwJV9/XZuUqBDF+egsslfHMhvabCX3mCHwuAZ+40997787xYYOOpeIBTUW8B8e4qRDSMD5YTBtSGGIePb+ug0NICRlBLFS+gdIga/DZlXJqaLQvFiHekzDVtHJmPjTnqS1cTz88JBz+FnT+OuI2iXl7mMzHbnz6Mw6vmAguZx8o0QlXv9ELIrlJYiztQKhWtvfSvIE0x8zVYNxS+j2YicdIgDL4v+H2iur73Woy3ufFSyaR8xAQgTtjWZ6utRh6iLIiGLJbbpzWpK9SyLfdO1gg41bCZcawCVnldkifd0jTQMT4NGFsIwBUS42OKMus/herJVuypQ4ap7Z0buY4s6MDl5DDvZh6hW1l2bYwfwcs4x/e3ALazt0WHfiz/FTnNGwNaPu8dqivTft5w9V98LV3r1lJ9lUri20lai3it8QxhMlbIoLbH+gT9j3riQQNkzQ1/feecPgxcP7pc=
+        password:
+          secure: nz+NSyShFrWURZZKXZS/ctimcpz8ofZFMNMU/pmV/LBNsv/gaWeiVgvaqiDOdw6ZmPz9bNZ3x1porYqHlm/H+6CySkXt7efKHaZnG20cDxxSSdvddgqZ4Ic4WciOPm2RnDJuSeFoQZ0Id7kjluiHDTBq8RNAsmI7pnqKYZiVPnvAlFvpwHQde8DOXqu38Bzo725A5hMK/tDWmMDf1VGZADfSn2XdTfBWOFiIBzjJizLIzO2ba9OcIFynN5UkfddAJVAniMTM1vSwfcotVd3LunZnUNstqQGDLS69F33eJ0P76OchjInIj+yrHFvBu/WOe536xePF2CgBTUgAmnmnov3FpcpOV0j093APkEzJrtwVEuJnAgi+fX6CBjz3FSi1xPzrUvIo6R8oWqkoxSn4LI7Bzr4m8mLWK5KmGXfeYNcGa4Myl0C8cgMglfTkvWCY22s629w37UJ8BjonCz1ib1UR2GnEvSaMLrWjhBBJh0Y46hT/ulFI4hhQzZ6gQ7fAaOxTwXN5+1comvEotmRY41VvnxYU36Dk0taGktLw87s0C3GH67GpiY7m1QH9G0IBtlvZTwI57lVhLOGwvSvjTwNtWdA/7KfHIukrL1pQ8X8+JtQG8pj69LUyvDzvosXE7h2U+mbat8sWG07N9zo+UK2W52+CAPhs8Gt8B/zl4tA=
+

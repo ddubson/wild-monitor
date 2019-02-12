@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "parcel src/index.html",
-    "build": "NODE_ENV=local parcel build src/index.html",
-    "build:prod": "NODE_ENV=prod parcel build src/index.html"
+    "start": "./node_modules/.bin/parcel src/index.html",
+    "build": "NODE_ENV=local ./node_modules/.bin/parcel build src/index.html",
+    "build:prod": "NODE_ENV=prod ./node_modules/.bin/parcel build src/index.html"
   },
   "repository": {
     "type": "git",
