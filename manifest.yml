@@ -1,0 +1,16 @@
+---
+applications:
+  - name: wildmonitor-web
+    path: wild-monitor-web/dist/
+    routes:
+      - route: wildmonitor-web.apps.pcfone.io
+    buildpacks:
+      - https://github.com/cloudfoundry/staticfile-buildpack.git
+  - name: wildmonitor-api
+    path: build/libs/wild-monitor.jar
+    routes:
+      - route: wildmonitor-api.apps.pcfone.io
+    env:
+      SPRING_PROFILES_ACTIVE: prod
+    buildpacks:
+      - https://github.com/cloudfoundry/java-buildpack.git
