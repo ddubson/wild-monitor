@@ -15,10 +15,6 @@ class CreateNewJobController(val projectRepository: ProjectRepository,
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_UTF8_VALUE],
             produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
     fun createANewJob(@RequestBody newJobRequest: JobRequest): ResponseEntity<JobResponse> {
-        if (!projectRepository.existsByProjectKey(newJobRequest.projectKey)) {
-            throw ProjectDoesNotExistException()
-        }
-
         return ResponseEntity.ok(JobResponse.fromJob(jobRepository.newJob(newJobRequest.projectKey)))
     }
 

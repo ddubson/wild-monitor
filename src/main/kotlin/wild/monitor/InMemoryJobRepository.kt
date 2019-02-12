@@ -2,7 +2,7 @@ package wild.monitor
 
 import java.util.*
 
-class InMemoryJobRepository: JobRepository {
+class InMemoryJobRepository(val projectRepository: ProjectRepository): JobRepository {
     private val jobs: MutableSet<Job> = mutableSetOf()
 
     override fun updateJob(jobId: String, updatedJob: Job) {
@@ -19,6 +19,10 @@ class InMemoryJobRepository: JobRepository {
     }
 
     override fun newJob(projectKey: String): Job {
+        if (!projectRepository.existsByProjectKey(projectKey)) {
+            throw ProjectDoesNotExistException()
+        }
+
         val job = Job(UUID.randomUUID(), JobStatus.PENDING, projectKey)
         jobs.add(job)
         return job
