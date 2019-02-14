@@ -9,7 +9,7 @@ import wild.monitor.repositories.JobRepository
 import wild.monitor.repositories.ProjectRepository
 
 @Configuration
-@Profile("default", "local", "test")
+@Profile("default", "local", "test", "prod")
 class AppConfig {
     @Bean
     fun projectRepository(): ProjectRepository = InMemoryProjectRepository()
