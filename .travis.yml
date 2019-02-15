@@ -16,6 +16,7 @@ jobs:
         - cd $TRAVIS_BUILD_DIR/wild-monitor-web
         - yarn install
       script:
+        - yarn test
         - yarn build:prod
         - cd $TRAVIS_BUILD_DIR
         - ./gradlew clean build --no-daemon

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "NODE_ENV=local ./node_modules/.bin/parcel src/index.html",
     "build": "NODE_ENV=local ./node_modules/.bin/parcel build src/index.html",
-    "build:prod": "NODE_ENV=prod ./node_modules/.bin/parcel build src/index.html"
+    "build:prod": "NODE_ENV=prod ./node_modules/.bin/parcel build src/index.html",
+    "test": "jest --bail"
   },
   "repository": {
     "type": "git",
@@ -23,8 +24,16 @@
   },
   "homepage": "https://github.com/ddubson/wild-monitor#readme",
   "devDependencies": {
+    "@types/enzyme": "^3.1.18",
+    "@types/jest": "^24.0.5",
     "dotenv": "^6.2.0",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.9.1",
+    "enzyme-react-16-adapter-setup": "^0.1.0",
+    "jest": "^24.1.0",
+    "jest-transform-stub": "^2.0.0",
     "parcel": "^1.11.0",
+    "ts-jest": "^23.10.5",
     "typescript": "^3.3.3"
   },
   "dependencies": {
@@ -38,5 +47,28 @@
     "react-dom": "^16.8.1",
     "react-router-dom": "^4.3.1",
     "shortid": "^2.2.14"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|sass|scss|svg|png)$": "jest-transform-stub"
+    },
+    "setupFiles": [
+      "enzyme-react-16-adapter-setup"
+    ],
+    "testRegex": "(/test/.*|(\\.|/)(test))\\.(test.tsx?)$",
+    "testPathIgnorePatterns": [
+      "/dist/"
+    ]
   }
 }
