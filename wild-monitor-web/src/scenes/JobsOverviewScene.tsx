@@ -31,6 +31,7 @@ const colorMap = (status: string) => {
         case "STARTED": return "orange";
         case "SUCCEEDED": return "lightgreen";
         case "FAILED": return "red";
+        case "EXPIRED": return "white";
         default:
             return "yellow";
     }
@@ -55,7 +56,8 @@ class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOvervi
             projectKey: params.get('projectKey'),
             jobs: [],
             events: []
-        }
+        };
+        setInterval(() => { this.fetchJobsByProjectKey(); }, 10000);
     }
 
     componentDidMount(): void {
@@ -65,19 +67,7 @@ class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOvervi
             })
         };
 
-        wildMonitorService.get(`/jobs?projectKey=${this.state.projectKey}`)
-            .then((response: AxiosResponse) => response.data)
-            .then((jobResponseArray: any) => {
-                this.setState({
-                    jobs: jobResponseArray.map((jobResponse: any) => {
-                        return {
-                            id: jobResponse.id,
-                            projectKey: jobResponse.projectKey,
-                            status: jobResponse.status
-                        }
-                    })
-                });
-            })
+        this.fetchJobsByProjectKey();
     }
 
     componentWillUnmount(): void {
@@ -99,10 +89,27 @@ class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOvervi
                 </section>
                 <section style={{marginTop: "15px"}}>
                     <h4>Events</h4>
-                    {this.state.events.map((event: Event) => <div>{event.data}</div>)}
+                    {this.state.events.map((event: Event) =>
+                        <div key={shortid.generate()}>{event.data}</div>)}
                 </section>
             </div>
         )
+    }
+
+    private fetchJobsByProjectKey() {
+        wildMonitorService.get(`/jobs?projectKey=${this.state.projectKey}`)
+            .then((response: AxiosResponse) => response.data)
+            .then((jobResponseArray: any) => {
+                this.setState({
+                    jobs: jobResponseArray.map((jobResponse: any) => {
+                        return {
+                            id: jobResponse.id,
+                            projectKey: jobResponse.projectKey,
+                            status: jobResponse.status
+                        }
+                    })
+                });
+            });
     }
 }
 

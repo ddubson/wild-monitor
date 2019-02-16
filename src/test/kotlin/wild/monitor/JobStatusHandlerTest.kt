@@ -34,4 +34,13 @@ class JobStatusHandlerTest {
         assertThat(actualJob.id).isEqualTo(job.id)
         assertThat(actualJob.status).isEqualTo(JobStatus.FAILED)
     }
+
+    @Test
+    @DisplayName("Status: Started -> Expired")
+    fun progressToNextState_whenProgressingFromStartedToExpired_thenItShouldSucceed() {
+        val job = Job(UUID.randomUUID(), JobStatus.STARTED, "projectkey")
+        val actualJob: Job = job.progressToNextState(JobStatus.EXPIRED)
+        assertThat(actualJob.id).isEqualTo(job.id)
+        assertThat(actualJob.status).isEqualTo(JobStatus.EXPIRED)
+    }
 }

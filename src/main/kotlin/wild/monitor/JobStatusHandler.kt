@@ -11,6 +11,8 @@ fun Job.progressToNextState(nextStatus: JobStatus): Job {
             copy(id = this.id, status = JobStatus.SUCCEEDED, projectKey = this.projectKey) else unknownJobStatus()
         JobStatus.FAILED -> if(this.status == JobStatus.STARTED)
             copy(id = this.id, status = JobStatus.FAILED, projectKey = this.projectKey) else unknownJobStatus()
+        JobStatus.EXPIRED -> if(this.status == JobStatus.STARTED)
+            copy(id = this.id, status = JobStatus.EXPIRED, projectKey = this.projectKey) else unknownJobStatus()
         else -> unknownJobStatus()
     }
 }

@@ -4,5 +4,6 @@ enum class JobStatus {
     PENDING,
     STARTED,
     SUCCEEDED,
-    FAILED
+    FAILED,
+    EXPIRED
 }
