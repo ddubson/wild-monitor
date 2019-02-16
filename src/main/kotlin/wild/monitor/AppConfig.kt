@@ -7,15 +7,22 @@ import wild.monitor.repositories.InMemoryJobRepository
 import wild.monitor.repositories.InMemoryProjectRepository
 import wild.monitor.repositories.JobRepository
 import wild.monitor.repositories.ProjectRepository
+import wild.monitor.usecases.DefaultUpdateJobStatusUseCase
+import wild.monitor.usecases.UpdateJobStatusUseCase
 
 @Configuration
 @Profile("default", "local", "test", "prod")
 class AppConfig {
     @Bean
+    fun updateJobStatusUseCase(jobRepository: JobRepository): UpdateJobStatusUseCase =
+            DefaultUpdateJobStatusUseCase(jobRepository)
+
+    @Bean
     fun projectRepository(): ProjectRepository = InMemoryProjectRepository()
 
     @Bean
-    fun jobRepository(projectRepository: ProjectRepository): JobRepository = InMemoryJobRepository(projectRepository)
+    fun jobRepository(projectRepository: ProjectRepository): JobRepository =
+            InMemoryJobRepository(projectRepository)
 
     @Bean
     fun dataStore(): InMemoryDataStore = InMemoryDataStore()

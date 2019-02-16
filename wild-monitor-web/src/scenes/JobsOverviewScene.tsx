@@ -29,6 +29,7 @@ const colorMap = (status: string) => {
     switch(status) {
         case "PENDING": return "yellow";
         case "STARTED": return "orange";
+        case "SUCCEEDED": return "lightgreen";
         default:
             return "yellow";
     }

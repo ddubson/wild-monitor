@@ -10,15 +10,18 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import wild.monitor.*
+import wild.monitor.WildMonitorTester
 import wild.monitor.repositories.InMemoryJobRepository
 import wild.monitor.repositories.InMemoryProjectRepository
 import wild.monitor.repositories.JobRepository
 import wild.monitor.repositories.ProjectRepository
+import wild.monitor.usecases.DefaultUpdateJobStatusUseCase
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(UpdateJobStatusController::class)
-@Import(InMemoryJobRepository::class, InMemoryProjectRepository::class)
+@Import(InMemoryJobRepository::class,
+        InMemoryProjectRepository::class,
+        DefaultUpdateJobStatusUseCase::class)
 class UpdateJobStatusControllerTest: WildMonitorTester() {
     @Autowired
     lateinit var projectRepository: ProjectRepository

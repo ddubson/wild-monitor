@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=local ./node_modules/.bin/parcel src/index.html",
-    "build": "NODE_ENV=local ./node_modules/.bin/parcel build src/index.html",
-    "build:prod": "NODE_ENV=prod ./node_modules/.bin/parcel build src/index.html",
+    "start": "cross-env NODE_ENV=local ./node_modules/.bin/parcel src/index.html",
+    "build": "cross-env NODE_ENV=local ./node_modules/.bin/parcel build src/index.html",
+    "build:prod": "cross-env NODE_ENV=prod ./node_modules/.bin/parcel build src/index.html",
     "test": "jest --bail"
   },
   "repository": {
@@ -26,6 +26,7 @@
   "devDependencies": {
     "@types/enzyme": "^3.1.18",
     "@types/jest": "^24.0.5",
+    "cross-env": "^5.2.0",
     "dotenv": "^6.2.0",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.9.1",
