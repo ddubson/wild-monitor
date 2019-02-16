@@ -30,6 +30,7 @@ const colorMap = (status: string) => {
         case "PENDING": return "yellow";
         case "STARTED": return "orange";
         case "SUCCEEDED": return "lightgreen";
+        case "FAILED": return "red";
         default:
             return "yellow";
     }

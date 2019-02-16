@@ -25,4 +25,13 @@ class JobStatusHandlerTest {
         assertThat(actualJob.id).isEqualTo(job.id)
         assertThat(actualJob.status).isEqualTo(JobStatus.SUCCEEDED)
     }
+
+    @Test
+    @DisplayName("Status: Started -> Failed")
+    fun progressToNextState_whenProgressingFromStartedToFailed_thenItShouldSucceed() {
+        val job = Job(UUID.randomUUID(), JobStatus.STARTED, "projectkey")
+        val actualJob: Job = job.progressToNextState(JobStatus.FAILED)
+        assertThat(actualJob.id).isEqualTo(job.id)
+        assertThat(actualJob.status).isEqualTo(JobStatus.FAILED)
+    }
 }
