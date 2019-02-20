@@ -1,5 +1,6 @@
 package wild.monitor
 
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
@@ -21,8 +22,8 @@ class AppConfig {
     fun projectRepository(): ProjectRepository = InMemoryProjectRepository()
 
     @Bean
-    fun jobRepository(projectRepository: ProjectRepository): JobRepository =
-            InMemoryJobRepository(projectRepository)
+    fun jobRepository(projectRepository: ProjectRepository, applicationEventPublisher: ApplicationEventPublisher): JobRepository =
+            InMemoryJobRepository(projectRepository, applicationEventPublisher)
 
     @Bean
     fun dataStore(): InMemoryDataStore = InMemoryDataStore()

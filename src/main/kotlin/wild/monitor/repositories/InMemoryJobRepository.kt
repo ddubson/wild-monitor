@@ -1,11 +1,13 @@
 package wild.monitor.repositories
 
+import org.springframework.context.ApplicationEventPublisher
 import wild.monitor.controllers.ProjectDoesNotExistException
 import wild.monitor.models.Job
 import wild.monitor.models.JobStatus
 import java.util.*
 
-class InMemoryJobRepository(val projectRepository: ProjectRepository): JobRepository {
+class InMemoryJobRepository(val projectRepository: ProjectRepository,
+                            val applicationEventPublisher: ApplicationEventPublisher): JobRepository {
     private val jobs: MutableSet<Job> = mutableSetOf()
 
     override fun replaceExistingJob(newJob: Job) {
@@ -26,6 +28,7 @@ class InMemoryJobRepository(val projectRepository: ProjectRepository): JobReposi
 
         val job = Job(UUID.randomUUID(), JobStatus.PENDING, projectKey)
         jobs.add(job)
+        applicationEventPublisher.publishEvent("Job ${job.id } added.")
         return job
     }
 }
