@@ -5,14 +5,10 @@ import * as shortid from "shortid";
 import wildMonitorService from "../App.config";
 import {Link} from "react-router-dom";
 import CreateProjectScene from "./CreateProjectScene";
-
-interface Project {
-  id: string
-  projectKey: string
-  projectName: string
-}
+import {Project} from "../models/Project";
 
 interface AppProps {
+  getAllProjects: () => Promise<Project[]>;
 }
 
 interface AppState {
@@ -39,19 +35,9 @@ class ProjectsDashboardScene extends PureComponent<AppProps, AppState> {
   }
 
   componentDidMount(): void {
-    wildMonitorService.get("/projects")
-      .then((response: AxiosResponse) => response.data)
-      .then((projectResponseArray: any) => {
-        this.setState({
-          projects: projectResponseArray.map((projectResponse: any) => {
-            return {
-              id: projectResponse.id,
-              projectKey: projectResponse.projectKey,
-              projectName: projectResponse.projectName
-            }
-          })
-        });
-      })
+    this.props.getAllProjects().then((projects: Project[]) => {
+        this.setState({ projects: projects });
+    }).catch(error => console.error(error));
   }
 
   render(): React.ReactNode {
