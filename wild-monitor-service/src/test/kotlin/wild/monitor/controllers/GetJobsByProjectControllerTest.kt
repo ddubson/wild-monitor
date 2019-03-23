@@ -8,12 +8,16 @@ import org.springframework.context.annotation.Import
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import wild.monitor.*
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import wild.monitor.WildMonitorTester
+import wild.monitor.helpers.IsISODateTimeCloseTo.Companion.isISODateTimeCloseTo
 import wild.monitor.repositories.InMemoryJobRepository
 import wild.monitor.repositories.InMemoryProjectRepository
 import wild.monitor.repositories.JobRepository
 import wild.monitor.repositories.ProjectRepository
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(GetJobsByProjectController::class)
@@ -35,10 +39,12 @@ class GetJobsByProjectControllerTest : WildMonitorTester() {
                 this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/jobs")
                         .param("projectKey", projectKey))
-                        .andExpect(MockMvcResultMatchers.status().isOk)
-                        .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(jobId))
-                        .andExpect(MockMvcResultMatchers.jsonPath("$[0].status").value("PENDING"))
-                        .andExpect(MockMvcResultMatchers.jsonPath("$[0].projectKey").value(projectKey))
+                        .andExpect(status().isOk)
+                        .andExpect(jsonPath("$[0].id").value(jobId))
+                        .andExpect(jsonPath("$[0].status").value("PENDING"))
+                        .andExpect(jsonPath("$[0].projectKey").value(projectKey))
+                        .andExpect(jsonPath("$[0].createdOn")
+                                .value(isISODateTimeCloseTo(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))))
             }
         }
     }

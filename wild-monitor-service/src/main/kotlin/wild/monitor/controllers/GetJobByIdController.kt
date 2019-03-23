@@ -6,10 +6,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
-import wild.monitor.models.Job
 import wild.monitor.repositories.JobNotFoundException
 import wild.monitor.repositories.JobRepository
-import wild.monitor.models.JobStatus
 
 @RestController
 class GetJobByIdController(val jobRepository: JobRepository) {
@@ -21,13 +19,5 @@ class GetJobByIdController(val jobRepository: JobRepository) {
     @ExceptionHandler(JobNotFoundException::class)
     fun jobNotFound(e: JobNotFoundException): ResponseEntity<JobResponse> {
         return ResponseEntity.notFound().build()
-    }
-}
-
-data class JobResponse(val id: String,
-                       val status: JobStatus,
-                       val projectKey: String) {
-    companion object {
-        fun fromJob(job: Job): JobResponse = JobResponse(job.id.toString(), job.status, job.projectKey)
     }
 }

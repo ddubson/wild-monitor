@@ -11,15 +11,18 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import wild.monitor.WildMonitorTester
+import wild.monitor.helpers.IsISODateTimeCloseTo.Companion.isISODateTimeCloseTo
 import wild.monitor.repositories.InMemoryJobRepository
 import wild.monitor.repositories.InMemoryProjectRepository
 import wild.monitor.repositories.ProjectRepository
-import wild.monitor.WildMonitorTester
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(CreateNewJobController::class)
 @Import(InMemoryProjectRepository::class, InMemoryJobRepository::class)
-internal class CreateNewJobControllerTest: WildMonitorTester() {
+internal class CreateNewJobControllerTest : WildMonitorTester() {
     @Autowired
     lateinit var projectRepository: ProjectRepository
 
@@ -41,6 +44,8 @@ internal class CreateNewJobControllerTest: WildMonitorTester() {
                     .andExpect(jsonPath("$.id").isNotEmpty)
                     .andExpect(jsonPath("$.status").value(jobStatus))
                     .andExpect(jsonPath("$.projectKey").value(projectKey))
+                    .andExpect(jsonPath("$.createdOn")
+                            .value(isISODateTimeCloseTo(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))))
         }
     }
 

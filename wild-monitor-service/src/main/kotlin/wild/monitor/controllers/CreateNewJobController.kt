@@ -26,8 +26,6 @@ class CreateNewJobController(val projectRepository: ProjectRepository,
     }
 }
 
-data class NewJobErrorResponse(val message: String)
-
 class ProjectDoesNotExistException: RuntimeException("Project does not exist.")
 /*
 interface JobRequestSpec<T> {
