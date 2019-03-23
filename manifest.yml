@@ -7,7 +7,7 @@ applications:
     buildpacks:
       - https://github.com/cloudfoundry/staticfile-buildpack.git
   - name: wildmonitor-api
-    path: wild-monitor-service/build/libs/wild-monitor.jar
+    path: wild-monitor-service/build/libs/wild-monitor-service.jar
     routes:
       - route: wildmonitor-api.apps.pcfone.io
     env:
