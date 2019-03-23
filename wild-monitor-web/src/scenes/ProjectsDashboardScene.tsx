@@ -1,14 +1,13 @@
 import {PureComponent} from "react";
 import * as React from "react";
-import {AxiosResponse} from "axios";
 import * as shortid from "shortid";
-import wildMonitorService from "../App.config";
 import {Link} from "react-router-dom";
 import CreateProjectScene from "./CreateProjectScene";
 import {Project} from "../models/Project";
 
 interface AppProps {
   getAllProjects: () => Promise<Project[]>;
+  addProject: (projectName: string) => Promise<Project>;
 }
 
 interface AppState {
@@ -29,6 +28,7 @@ const renderProject = (project: Project): JSX.Element =>
 class ProjectsDashboardScene extends PureComponent<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
+    this.addProject = this.addProject.bind(this);
     this.state = {
       projects: []
     }
@@ -36,7 +36,7 @@ class ProjectsDashboardScene extends PureComponent<AppProps, AppState> {
 
   componentDidMount(): void {
     this.props.getAllProjects().then((projects: Project[]) => {
-        this.setState({ projects: projects });
+      this.setState({projects: projects});
     }).catch(error => console.error(error));
   }
 
@@ -49,23 +49,18 @@ class ProjectsDashboardScene extends PureComponent<AppProps, AppState> {
         </section>
         <hr />
         <section>
-          <CreateProjectScene addProject={(projectName) => {
-            console.log("Adding project", projectName);
-            wildMonitorService.post("/projects", {projectName})
-              .then((response: AxiosResponse) => response.data)
-              .then((data) => {
-                this.setState({
-                  projects: [...this.state.projects, {
-                    id: data.id,
-                    projectKey: data.projectKey,
-                    projectName: data.projectName
-                  }]
-                })
-              });
-          }} />
+          <CreateProjectScene addProject={this.addProject} />
         </section>
       </section>
     )
+  }
+
+  addProject(projectName: string): void {
+    this.props.addProject(projectName).then((project: Project) => {
+      this.setState({
+        projects: [...this.state.projects, project]
+      });
+    });
   }
 }
 

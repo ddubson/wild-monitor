@@ -7,3 +7,8 @@ export const getAllProjects = (): Promise<Project[]> => {
     .then((response: AxiosResponse) => response.data)
     .catch(error => console.error("Catch me!!"));
 };
+
+export const AddProject = (projectName: string): Promise<Project> => {
+  return wildMonitorService.post("/projects", {projectName})
+    .then((response: AxiosResponse) => response.data);
+};
