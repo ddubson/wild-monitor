@@ -1,6 +1,7 @@
 import wildMonitorService from "../App.config";
 import {AxiosResponse} from "axios";
 import {Project} from "../models/Project";
+import {Job} from "../models/Job";
 
 export const getAllProjects = (): Promise<Project[]> => {
   return wildMonitorService.get("/projects")
@@ -10,5 +11,10 @@ export const getAllProjects = (): Promise<Project[]> => {
 
 export const AddProject = (projectName: string): Promise<Project> => {
   return wildMonitorService.post("/projects", {projectName})
+    .then((response: AxiosResponse) => response.data);
+};
+
+export const getJobsByProjectKey = (projectKey: string): Promise<Job[]> => {
+  return wildMonitorService.get(`/jobs?projectKey=${projectKey}`)
     .then((response: AxiosResponse) => response.data);
 };
