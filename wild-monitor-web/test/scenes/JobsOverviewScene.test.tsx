@@ -27,8 +27,8 @@ describe("Jobs Dashboard Scene", () => {
   describe("When project has jobs", () => {
     beforeEach(() => {
       const jobs: Job[] = [
-        {id: "1", projectKey: "1p", status: "PENDING"},
-        {id: "2", projectKey: "2p", status: "STARTED"}
+        {id: "1", projectKey: "1p", status: "PENDING", createdOn: "2019-01-01"},
+        {id: "2", projectKey: "2p", status: "STARTED", createdOn: "2018-12-19"}
       ];
 
       const promiseOfJobs: (projectKey: string) => Promise<Job[]> =
@@ -43,8 +43,10 @@ describe("Jobs Dashboard Scene", () => {
         scene.update();
         expect(findOrFail(scene, "[data-test='job-item-header']")
           .map(job => job.text())).toEqual(["PENDING", "STARTED"]);
-        expect(findOrFail(scene, "[data-test='job-item-body']")
+        expect(findOrFail(scene, "[data-test='job-item-id']")
           .map(job => job.text())).toEqual(["1", "2"]);
+        expect(findOrFail(scene, "[data-test='job-item-created-on']")
+          .map(job => job.text())).toEqual(["2019-01-01", "2018-12-19"]);
         done();
       });
     });
