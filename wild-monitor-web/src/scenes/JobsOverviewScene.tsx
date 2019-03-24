@@ -61,7 +61,10 @@ class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOvervi
   render(): React.ReactNode {
     return (
       <div>
-        <nav><Link to={"/"}>Back to Projects</Link></nav>
+        <section>
+          <h3>Jobs</h3>
+          <Link to={"/"}> &gt;&gt; Projects</Link>
+        </section>
         <section style={{marginTop: "15px"}} data-test="jobs-list">
           {this.state.jobs.length !== 0 ? this.state.jobs.map(renderJob) : "No jobs yet."}
         </section>
