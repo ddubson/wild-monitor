@@ -38,9 +38,9 @@ const colorMap = (status: string) => {
 };
 
 const renderJob = (job: Job) =>
-    <div className="card" key={shortid.generate()} style={{marginTop: "5px", borderColor: "lightgreen", backgroundColor: "black",width: "18rem"}}>
+    <div className="card" key={shortid.generate()} style={{marginTop: "5px",width: "18rem"}}>
+        <h5 className="card-header" style={{color: colorMap(job.status), backgroundColor: "black"}}>{job.status}</h5>
         <div className="card-body">
-            <h5 className="card-title" style={{color: colorMap(job.status)}}>{job.status}</h5>
             <h6 className="card-subtitle mb-2 text-muted">{job.id}</h6>
         </div>
     </div>;
