@@ -46,6 +46,7 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/shortid": "^0.0.29",
     "axios": "^0.18.0",
+    "moment": "^2.24.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-router-dom": "^4.3.1",

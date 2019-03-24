@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import wildMonitorService from "../App.config";
 import * as shortid from "shortid";
 import {Job} from "../models/Job";
+import moment = require("moment");
 
 interface JobsOverviewSceneProps {
   location: any,
@@ -39,7 +40,9 @@ const renderJob = (job: Job) =>
         style={{color: colorMap(job.status), backgroundColor: "black"}}>{job.status}</h5>
     <div className="card-body" data-test="job-item-body">
       <h6 data-test="job-item-id" className="card-subtitle mb-2 text-muted">{job.id}</h6>
-      <div data-test="job-item-created-on" style={{fontSize: "11px", color: "lightgrey"}}>{job.createdOn}</div>
+      <div data-test="job-item-created-on"
+           style={{fontSize: "11px", color: "lightgrey"}}>
+        {moment(job.createdOn).fromNow()} ({job.createdOn})</div>
     </div>
   </div>;
 

@@ -1,6 +1,7 @@
 $backgroundColor: #efefeb;
+$fontFamily: 'Titillium Web', sans-serif;
 
 body {
   background-color: $backgroundColor;
-  font-family: 'Titillium Web', sans-serif;
+  font-family: $fontFamily;
 }
