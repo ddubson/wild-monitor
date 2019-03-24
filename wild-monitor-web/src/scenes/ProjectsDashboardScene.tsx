@@ -15,15 +15,13 @@ interface AppState {
 }
 
 const renderProject = (project: Project): JSX.Element =>
-  <div className="card" key={shortid.generate()} style={{width: "18rem"}}>
-    <div className="card-body">
-      <h5 className="card-title">{project.projectName}</h5>
-      <h6 className="card-subtitle mb-2 text-muted">{project.id}</h6>
-      <Link to={`/jobs?projectKey=${project.projectKey}`} className="card-link">
-        View Jobs
-      </Link>
-    </div>
-  </div>;
+  <li className="list-group-item" key={shortid.generate()}>
+    <h5>{project.projectName}</h5>
+    <h6>{project.id}</h6>
+    <Link to={`/jobs?projectKey=${project.projectKey}`}>
+      View Jobs
+    </Link>
+  </li>;
 
 class ProjectsDashboardScene extends PureComponent<AppProps, AppState> {
   constructor(props: AppProps) {
@@ -45,7 +43,9 @@ class ProjectsDashboardScene extends PureComponent<AppProps, AppState> {
       <section>
         <div className="scene-title"><h3>Projects</h3></div>
         <section>
-          {this.state.projects.map(renderProject)}
+          <ul className="list-group">
+            {this.state.projects.map(renderProject)}
+          </ul>
         </section>
         <hr />
         <section>

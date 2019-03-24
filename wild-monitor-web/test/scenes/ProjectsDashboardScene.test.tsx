@@ -36,10 +36,10 @@ describe("Projects Dashboard Scene", () => {
     it("should load projects that exist in the system", (done) => {
       setImmediate(() => {
         scene.update();
-        const projectTitles = scene.find(".card .card-title").map(title => title.text());
+        const projectTitles = scene.find(".list-group-item h5").map(title => title.text());
         expect(["name1", "name2"]).toEqual(projectTitles);
 
-        const projectIds = scene.find(".card .card-subtitle").map(title => title.text());
+        const projectIds = scene.find(".list-group-item h6").map(title => title.text());
         expect(["1", "2"]).toEqual(projectIds);
         done();
       });
@@ -77,10 +77,10 @@ describe("Projects Dashboard Scene", () => {
           it("should add the project to the dashboard", (done) => {
             setImmediate(() => {
               scene.update();
-              const projectTitles = scene.find(".card .card-title").map(title => title.text());
+              const projectTitles = scene.find(".list-group-item h5").map(title => title.text());
               expect(projectTitles).toEqual(["Test Project"]);
 
-              const projectIds = scene.find(".card .card-subtitle").map(title => title.text());
+              const projectIds = scene.find(".list-group-item h6").map(title => title.text());
               expect(projectIds).toEqual(["1"]);
               done();
             })
