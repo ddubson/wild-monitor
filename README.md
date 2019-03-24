@@ -1,6 +1,37 @@
+[![Build Status](https://travis-ci.org/ddubson/wild-monitor.svg?branch=master)](https://travis-ci.org/ddubson/wild-monitor)
+
 # WildMonitor
 
-[![Build Status](https://travis-ci.org/ddubson/wild-monitor.svg?branch=master)](https://travis-ci.org/ddubson/wild-monitor)
+## Goal
+
+An ancillary system that receives minimal signal data from an external CI/CD pipeline that can be
+used for tracking and visualizing trends. The goal is to use WebHooks with minimal request data
+to send general data about a CI job from an external system.
+
+## Running
+
+### Running Locally
+
+Web Client
+
+```bash
+cd wild-monitor-web
+yarn install # first time only
+yarn start
+```
+
+accessible via `http://localhost:1234`
+
+Wild Monitor Service
+
+```bash
+cd wild-monitor-service
+./gradlew clean bootRun
+```
+
+accessible via `http://localhost:8080`
+
+### Projects and Jobs in WildMonitor
 
 `Job` is an instance of a run that can have the following statuses:
 
