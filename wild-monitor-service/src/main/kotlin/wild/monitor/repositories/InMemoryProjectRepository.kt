@@ -5,9 +5,7 @@ import wild.monitor.models.Project
 class InMemoryProjectRepository : ProjectRepository {
     private val projects: MutableSet<Project> = mutableSetOf()
 
-    override fun fetchAll(): List<Project> {
-        return this.projects.toList()
-    }
+    override fun fetchAll(): List<Project> = this.projects.toList()
 
     override fun addProject(projectName: String): Project {
         val element = Project(projectName)

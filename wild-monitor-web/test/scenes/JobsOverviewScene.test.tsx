@@ -4,6 +4,7 @@ import JobsOverviewScene from "../../src/scenes/JobsOverviewScene";
 import * as React from "react";
 import {MemoryRouter} from "react-router";
 import {Job} from "../../src/models/Job";
+import moment = require("moment");
 
 const emptyPromiseOfJobs: (projectKey: string) => Promise<Job[]> =
   () => Promise.resolve([]);
@@ -39,6 +40,8 @@ describe("Jobs Dashboard Scene", () => {
     });
 
     it("should display the jobs", (done) => {
+      const relativeTimes = [moment("2019-01-01").fromNow(), moment("2018-12-19").fromNow()];
+
       setImmediate(() => {
         scene.update();
         expect(findOrFail(scene, "[data-test='job-item-header']")
@@ -46,7 +49,7 @@ describe("Jobs Dashboard Scene", () => {
         expect(findOrFail(scene, "[data-test='job-item-id']")
           .map(job => job.text())).toEqual(["1", "2"]);
         expect(findOrFail(scene, "[data-test='job-item-created-on']")
-          .map(job => job.text())).toEqual(["2019-01-01", "2018-12-19"]);
+          .map(job => job.text())).toEqual([`${relativeTimes[0]} (2019-01-01)`, `${relativeTimes[1]} (2018-12-19)`]);
         done();
       });
     });

@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import wild.monitor.WildMonitorTester
-import wild.monitor.helpers.IsISODateTimeCloseTo
+import wild.monitor.helpers.IsISODateTimeCloseTo.Companion.isISODateTimeCloseTo
 import wild.monitor.repositories.InMemoryJobRepository
 import wild.monitor.repositories.InMemoryProjectRepository
 import wild.monitor.repositories.JobRepository
@@ -42,7 +42,7 @@ class GetJobByIdControllerTest: WildMonitorTester() {
                         .andExpect(jsonPath("$.status").value("PENDING"))
                         .andExpect(jsonPath("$.projectKey").value(projectKey))
                         .andExpect(jsonPath("$.createdOn")
-                                .value(IsISODateTimeCloseTo.isISODateTimeCloseTo(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))))
+                                .value(isISODateTimeCloseTo(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))))
             }
         }
     }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import wild.monitor.ProjectDoesNotExistException
 import wild.monitor.repositories.JobRepository
 import wild.monitor.repositories.ProjectRepository
 
@@ -16,17 +17,16 @@ class CreateNewJobController(val projectRepository: ProjectRepository,
                              val jobRepository: JobRepository) {
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_UTF8_VALUE],
             produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
-    fun createANewJob(@RequestBody newJobRequest: JobRequest): ResponseEntity<JobResponse> {
-        return ResponseEntity.ok(JobResponse.fromJob(jobRepository.newJob(newJobRequest.projectKey)))
-    }
+    fun createANewJob(@RequestBody newJobRequest: JobRequest): ResponseEntity<JobResponse> =
+            ResponseEntity.ok(JobResponse.fromJob(jobRepository.newJob(newJobRequest.projectKey)))
 
     @ExceptionHandler(ProjectDoesNotExistException::class)
-    fun projectDoesNotExistException(e: ProjectDoesNotExistException): ResponseEntity<NewJobErrorResponse> {
-        return ResponseEntity.badRequest().body(NewJobErrorResponse(e.message ?: "Project does not exist."))
-    }
+    fun projectDoesNotExistException(e: ProjectDoesNotExistException): ResponseEntity<NewJobErrorResponse> =
+            ResponseEntity.badRequest().body(NewJobErrorResponse(e.message
+            ?: "Project does not exist."))
+
 }
 
-class ProjectDoesNotExistException: RuntimeException("Project does not exist.")
 /*
 interface JobRequestSpec<T> {
     fun onJobCreated(onJobCreated: (job: Job) -> T): JobRequestSpec<T>

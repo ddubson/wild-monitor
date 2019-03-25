@@ -10,7 +10,7 @@ import wild.monitor.repositories.JobRepository
 @RestController
 class GetJobsByProjectController(val jobRepository: JobRepository) {
     @GetMapping("/jobs", produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
-    fun getJobsByProjectKey(@RequestParam("projectKey") projectKey: String): ResponseEntity<List<JobResponse>> {
-        return ResponseEntity.ok(jobRepository.getJobsByProjectKey(projectKey).map { JobResponse.fromJob(it) })
-    }
+    fun getJobsByProjectKey(@RequestParam("projectKey") projectKey: String): ResponseEntity<List<JobResponse>> =
+            ResponseEntity.ok(jobRepository.getJobsByProjectKey(projectKey).map { JobResponse.fromJob(it) })
+
 }

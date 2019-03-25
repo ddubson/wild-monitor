@@ -1,7 +1,7 @@
 package wild.monitor.repositories
 
 import org.springframework.context.ApplicationEventPublisher
-import wild.monitor.controllers.ProjectDoesNotExistException
+import wild.monitor.ProjectDoesNotExistException
 import wild.monitor.models.Job
 import wild.monitor.models.JobStatus
 import java.util.*

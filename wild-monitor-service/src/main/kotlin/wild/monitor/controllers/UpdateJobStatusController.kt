@@ -2,6 +2,7 @@ package wild.monitor.controllers
 
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
@@ -19,6 +20,6 @@ class UpdateJobStatusController(private val updateJobStatusUseCase: UpdateJobSta
     fun updateJobStatus(@PathVariable("jobId") jobId: String,
                         @RequestBody jobStatusRequest: UpdateJobStatusRequest): ResponseEntity<JobResponse> {
         updateJobStatusUseCase.updateJobStatus(jobId, JobStatus.valueOf(jobStatusRequest.newStatus))
-        return ResponseEntity.ok(JobResponse.fromJob(jobRepository.getJobById(jobId)))
+        return ok(JobResponse.fromJob(jobRepository.getJobById(jobId)))
     }
 }

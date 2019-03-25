@@ -12,12 +12,9 @@ import wild.monitor.repositories.JobRepository
 @RestController
 class GetJobByIdController(val jobRepository: JobRepository) {
     @GetMapping("/jobs/{jobId}", produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
-    fun getExistingJob(@PathVariable("jobId") jobId: String): ResponseEntity<JobResponse> {
-        return ResponseEntity.ok(JobResponse.fromJob(jobRepository.getJobById(jobId)))
-    }
+    fun getExistingJob(@PathVariable("jobId") jobId: String): ResponseEntity<JobResponse> =
+            ResponseEntity.ok(JobResponse.fromJob(jobRepository.getJobById(jobId)))
 
     @ExceptionHandler(JobNotFoundException::class)
-    fun jobNotFound(e: JobNotFoundException): ResponseEntity<JobResponse> {
-        return ResponseEntity.notFound().build()
-    }
+    fun jobNotFound(e: JobNotFoundException): ResponseEntity<JobResponse> = ResponseEntity.notFound().build()
 }
