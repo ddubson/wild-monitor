@@ -4,6 +4,7 @@ import * as shortid from "shortid";
 import {Link} from "react-router-dom";
 import CreateProjectScene from "./CreateProjectScene";
 import {Project} from "../models/Project";
+import moment = require("moment");
 
 interface AppProps {
   getAllProjects: () => Promise<Project[]>;
@@ -22,6 +23,9 @@ const renderProject = (project: Project): JSX.Element =>
     <Link to={`/jobs?projectKey=${project.projectKey}`}>
       View Jobs
     </Link>
+    <div data-test="project-created-on" className="text-muted" style={{fontSize: "0.7em"}}>
+      {project.createdOn}
+    </div>
   </li>;
 
 class ProjectsDashboardScene extends PureComponent<AppProps, AppState> {

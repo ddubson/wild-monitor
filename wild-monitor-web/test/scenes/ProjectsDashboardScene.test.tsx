@@ -12,8 +12,8 @@ describe("Projects Dashboard Scene", () => {
   describe("On page load", () => {
     beforeEach(() => {
       const expectedProjects: Project[] = [
-        {id: "1", projectKey: "p1", projectName: "name1"},
-        {id: "2", projectKey: "p2", projectName: "name2"},
+        {id: "1", projectKey: "p1", projectName: "name1", createdOn: "2019-01-01"},
+        {id: "2", projectKey: "p2", projectName: "name2", createdOn: "2018-01-01"},
       ];
       const fakeGetAllProjects: () => Promise<Project[]> =
         () => Promise.resolve(expectedProjects);
@@ -31,11 +31,15 @@ describe("Projects Dashboard Scene", () => {
     it("should load projects that exist in the system", (done) => {
       setImmediate(() => {
         scene.update();
-        const projectTitles = scene.find(".list-group-item h5").map(title => title.text());
+        const projectCard = scene.find(".list-group-item");
+        const projectTitles = projectCard.find("h5").map(title => title.text());
         expect(["name1", "name2"]).toEqual(projectTitles);
 
-        const projectIds = scene.find(".list-group-item h6").map(title => title.text());
+        const projectIds = projectCard.find("h6").map(title => title.text());
         expect(["1", "2"]).toEqual(projectIds);
+
+        const projectCreatedOn = projectCard.find("[data-test='project-created-on']").map(p => p.text());
+        expect(projectCreatedOn).toEqual(["2019-01-01", "2018-01-01"]);
         done();
       });
     });
@@ -48,7 +52,8 @@ describe("Projects Dashboard Scene", () => {
           const expectedProject: Project = {
             id: "1",
             projectKey: "p1",
-            projectName: "Test Project"
+            projectName: "Test Project",
+            createdOn: "2017-01-01"
           };
 
           const addProjectSpy: (projectName: string) => Promise<Project> =
@@ -75,11 +80,13 @@ describe("Projects Dashboard Scene", () => {
 
               const projectIds = scene.find(".list-group-item h6").map(title => title.text());
               expect(projectIds).toEqual(["1"]);
+
+              expect(getTextByClassName(scene, "[data-test='project-created-on']")).toEqual("2017-01-01");
               done();
             });
 
           });
-          
+
           it("should not display an error message", (done) => {
             setImmediate(() => {
               expect(scene.find("[data-test='add-project-error']")).toHaveLength(0);

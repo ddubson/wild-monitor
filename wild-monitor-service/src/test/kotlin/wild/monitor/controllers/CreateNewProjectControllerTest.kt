@@ -11,8 +11,11 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import wild.monitor.helpers.IsISODateTimeCloseTo.Companion.isISODateTimeCloseTo
 import wild.monitor.repositories.InMemoryProjectRepository
 import wild.monitor.usecases.web.CreateProjectWebUseCase
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(CreateNewProjectController::class)
@@ -36,6 +39,8 @@ class CreateNewProjectControllerTest {
                 .andExpect(jsonPath("$.id").isNotEmpty)
                 .andExpect(jsonPath("$.projectKey").isNotEmpty)
                 .andExpect(jsonPath("$.projectName").value(projectName))
+                .andExpect(jsonPath("$.createdOn")
+                        .value(isISODateTimeCloseTo(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))))
     }
 
     @Test
