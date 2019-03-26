@@ -25,8 +25,7 @@ accessible via `http://localhost:1234`
 Wild Monitor Service
 
 ```bash
-cd wild-monitor-service
-./gradlew clean bootRun
+./gradlew clean :wild-monitor-service:bootRun
 ```
 
 accessible via `http://localhost:8080`
