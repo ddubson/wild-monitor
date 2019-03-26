@@ -3,6 +3,7 @@ import * as React from "react";
 
 interface CreateProjectSceneProps {
   addProject: (projectName: string) => void;
+  errorMessage?: string;
 }
 
 interface CreateProjectSceneState {
@@ -23,6 +24,9 @@ class CreateProjectScene extends PureComponent<CreateProjectSceneProps, CreatePr
     return (
       <React.Fragment>
         <div>Create Project</div>
+        {this.props.errorMessage && <div data-test="add-project-error" className="alert alert-danger" role="alert">
+          {this.props.errorMessage}
+        </div>}
         <form onSubmit={this.onSubmit}>
           <label htmlFor={"projectName"}>Project Name</label>
           <input type={"text"} name="projectName" onChange={this.setProjectName} placeholder={"Project name"} />

@@ -21,8 +21,8 @@ class CreateNewJobController(val projectRepository: ProjectRepository,
             ResponseEntity.ok(JobResponse.fromJob(jobRepository.newJob(newJobRequest.projectKey)))
 
     @ExceptionHandler(ProjectDoesNotExistException::class)
-    fun projectDoesNotExistException(e: ProjectDoesNotExistException): ResponseEntity<NewJobErrorResponse> =
-            ResponseEntity.badRequest().body(NewJobErrorResponse(e.message
+    fun projectDoesNotExistException(e: ProjectDoesNotExistException): ResponseEntity<ErrorResponse> =
+            ResponseEntity.badRequest().body(ErrorResponse(e.message
             ?: "Project does not exist."))
 
 }

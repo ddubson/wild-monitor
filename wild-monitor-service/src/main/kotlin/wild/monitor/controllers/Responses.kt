@@ -27,4 +27,4 @@ data class JobResponse(val id: String,
     }
 }
 
-data class NewJobErrorResponse(val message: String)
+data class ErrorResponse(val message: String = "An error has occurred.")

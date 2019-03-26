@@ -11,7 +11,8 @@ interface AppProps {
 }
 
 interface AppState {
-  projects: Project[]
+  projects: Project[];
+  errorMessage?: string;
 }
 
 const renderProject = (project: Project): JSX.Element =>
@@ -49,7 +50,7 @@ class ProjectsDashboardScene extends PureComponent<AppProps, AppState> {
         </section>
         <hr />
         <section>
-          <CreateProjectScene addProject={this.addProject} />
+          <CreateProjectScene errorMessage={this.state.errorMessage} addProject={this.addProject} />
         </section>
       </section>
     )
@@ -58,8 +59,11 @@ class ProjectsDashboardScene extends PureComponent<AppProps, AppState> {
   addProject(projectName: string): void {
     this.props.addProject(projectName).then((project: Project) => {
       this.setState({
-        projects: [...this.state.projects, project]
+        projects: [...this.state.projects, project],
+        errorMessage: null,
       });
+    }).catch(error => {
+      this.setState({...this.state, errorMessage: error})
     });
   }
 }

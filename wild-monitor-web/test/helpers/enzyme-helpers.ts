@@ -9,6 +9,6 @@ export const findOrFail = (wrapper: ReactWrapper, cssSelector: string): ReactWra
   if (result && result.length > 0) {
     return result;
   } else {
-    fail(`Could not find element by CSS selector '${cssSelector}'`);
+    expect(cssSelector).toEqual("to be present but was not.");
   }
 };

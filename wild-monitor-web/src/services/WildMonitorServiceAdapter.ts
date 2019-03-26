@@ -11,7 +11,8 @@ export const getAllProjects = (): Promise<Project[]> => {
 
 export const AddProject = (projectName: string): Promise<Project> => {
   return wildMonitorService.post("/projects", {projectName})
-    .then((response: AxiosResponse) => response.data);
+    .then((response: AxiosResponse) => response.data)
+    .catch(error => Promise.reject(error.response.data.message));
 };
 
 export const getJobsByProjectKey = (projectKey: string): Promise<Job[]> => {

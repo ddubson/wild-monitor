@@ -5,9 +5,7 @@ import * as React from "react";
 import {MemoryRouter} from "react-router";
 import {Job} from "../../src/models/Job";
 import moment = require("moment");
-
-const emptyPromiseOfJobs: (projectKey: string) => Promise<Job[]> =
-  () => Promise.resolve([]);
+import {emptyPromiseOfJobs} from "../helpers/Promises";
 
 describe("Jobs Dashboard Scene", () => {
   let scene: ReactWrapper;

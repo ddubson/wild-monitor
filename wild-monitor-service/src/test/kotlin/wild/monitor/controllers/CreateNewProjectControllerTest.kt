@@ -37,4 +37,20 @@ class CreateNewProjectControllerTest {
                 .andExpect(jsonPath("$.projectKey").isNotEmpty)
                 .andExpect(jsonPath("$.projectName").value(projectName))
     }
+
+    @Test
+    fun createNewProject_whenProvidedADuplicateProjectName_shouldReturnBadRequest() {
+        val requestBody = """
+            { "projectName": "Duplicate" }
+        """.trimIndent()
+        this.mockMvc.perform(post("/projects")
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(status().isOk)
+        this.mockMvc.perform(post("/projects")
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(status().isBadRequest)
+                .andExpect(jsonPath("$.message").value("Project name has already been taken."))
+    }
 }
