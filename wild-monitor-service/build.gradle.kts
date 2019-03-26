@@ -10,7 +10,6 @@ plugins {
 }
 
 val junitVersion = "5.3.2"
-val spekVersion = "2.0.0-rc.1"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -42,7 +41,7 @@ application {
     mainClassName = "wild.monitor.WildMonitorAppKt"
 }
 
-val compileKotlin by tasks.getting(KotlinCompile::class) {
+tasks.withType(KotlinCompile::class).all {
     kotlinOptions {
         jvmTarget = "1.8"
     }

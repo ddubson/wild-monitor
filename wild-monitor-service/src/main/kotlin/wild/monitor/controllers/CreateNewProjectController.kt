@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import wild.monitor.repositories.ProjectRepository
+import wild.monitor.usecases.CreateProjectUseCase
 
 @RestController
 @RequestMapping("/projects")
-class CreateNewProjectController(val projectRepository: ProjectRepository) {
+class CreateNewProjectController(private val createProjectUseCase: CreateProjectUseCase<ProjectResponse>) {
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_UTF8_VALUE],
             produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
     fun createANewProject(@RequestBody newProjectRequest: NewProjectRequest): ResponseEntity<ProjectResponse> =
-            ok(ProjectResponse.fromProject(projectRepository.addProject(newProjectRequest.projectName)))
+            ok(createProjectUseCase.createProject(newProjectRequest.projectName))
 }

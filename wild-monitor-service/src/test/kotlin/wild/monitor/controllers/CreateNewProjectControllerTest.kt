@@ -12,10 +12,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import wild.monitor.repositories.InMemoryProjectRepository
+import wild.monitor.usecases.web.CreateProjectWebUseCase
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(CreateNewProjectController::class)
-@Import(InMemoryProjectRepository::class)
+@Import(CreateProjectWebUseCase::class,
+        InMemoryProjectRepository::class)
 class CreateNewProjectControllerTest {
     @Autowired
     lateinit var mockMvc: MockMvc

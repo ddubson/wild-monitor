@@ -19,7 +19,7 @@ jobs:
         - yarn test
         - yarn build:prod
         - cd $TRAVIS_BUILD_DIR
-        - ./gradlew clean build --no-daemon
+        - ./gradlew clean :wild-monitor-service:build --no-daemon
       deploy:
         provider: cloudfoundry
         api: https://api.run.pcfone.io

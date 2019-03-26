@@ -16,12 +16,14 @@ import wild.monitor.helpers.IsISODateTimeCloseTo.Companion.isISODateTimeCloseTo
 import wild.monitor.repositories.InMemoryJobRepository
 import wild.monitor.repositories.InMemoryProjectRepository
 import wild.monitor.repositories.ProjectRepository
+import wild.monitor.usecases.web.CreateProjectWebUseCase
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(CreateNewJobController::class)
-@Import(InMemoryProjectRepository::class, InMemoryJobRepository::class)
+@Import(InMemoryProjectRepository::class,
+        InMemoryJobRepository::class)
 internal class CreateNewJobControllerTest : WildMonitorTester() {
     @Autowired
     lateinit var projectRepository: ProjectRepository
