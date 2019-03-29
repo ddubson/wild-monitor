@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import wild.monitor.NoProjectNameSuppliedException
 import wild.monitor.ProjectNameTakenException
 import wild.monitor.usecases.CreateProjectUseCase
 
@@ -21,7 +22,10 @@ class CreateNewProjectController(private val createProjectUseCase: CreateProject
             ok(createProjectUseCase.createProject(newProjectRequest.projectName))
 
     @ExceptionHandler(ProjectNameTakenException::class)
-    fun projectNameTaken(e: ProjectNameTakenException): ResponseEntity<ErrorResponse> {
-        return badRequest().body(ErrorResponse(e.message!!))
-    }
+    fun projectNameTaken(e: ProjectNameTakenException): ResponseEntity<ErrorResponse> =
+            badRequest().body(ErrorResponse(e.message!!))
+
+    @ExceptionHandler(NoProjectNameSuppliedException::class)
+    fun noProjectNameSuppliedException(e: NoProjectNameSuppliedException): ResponseEntity<ErrorResponse> =
+            badRequest().body(ErrorResponse(e.message!!, "Please provide a unique project name."))
 }

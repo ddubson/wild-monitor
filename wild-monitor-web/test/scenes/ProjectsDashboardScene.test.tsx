@@ -47,7 +47,7 @@ describe("Projects Dashboard Scene", () => {
 
   describe("Adding a project", () => {
     describe("given the projects service is operational", () => {
-      describe("When I type in a project name", () => {
+      describe("when I type in a project name", () => {
         beforeEach(() => {
           const expectedProject: Project = {
             id: "1",
@@ -117,6 +117,32 @@ describe("Projects Dashboard Scene", () => {
                 done();
               })
             });
+          });
+        });
+      });
+
+      describe("when I supply no project name", () => {
+        beforeEach(() => {
+          scene = mount(<MemoryRouter initialEntries={["/"]} initialIndex={1}>
+            <ProjectsDashboardScene getAllProjects={emptyPromiseOfProjects}
+                                    addProject={emptyAddProjectPromise} /></MemoryRouter>
+          );
+
+          findOrFail(scene, "input[name='projectName']")
+            .simulate("change", {target: {value: ""}});
+        });
+
+        describe("and I click 'Add Project'", () => {
+          beforeEach(() => {
+            findOrFail(scene, "[type='submit']").simulate('submit');
+          });
+
+          it("should display an error message", (done) => {
+            setImmediate(() => {
+              scene.update();
+              expect(getTextByClassName(scene, "[data-test='add-project-error']")).toEqual("Please provide a unique project name");
+              done();
+            })
           });
         });
       });

@@ -61,14 +61,25 @@ class ProjectsDashboardScene extends PureComponent<AppProps, AppState> {
   }
 
   addProject(projectName: string): void {
-    this.props.addProject(projectName).then((project: Project) => {
-      this.setState({
-        projects: [...this.state.projects, project],
-        errorMessage: null,
+    this.withValidProjectForm(projectName, (projectName) => {
+      this.props.addProject(projectName).then((project: Project) => {
+        this.setState({
+          projects: [...this.state.projects, project],
+          errorMessage: null,
+        });
+      }).catch(error => {
+        this.setState({...this.state, errorMessage: error})
       });
-    }).catch(error => {
-      this.setState({...this.state, errorMessage: error})
     });
+  }
+
+  private withValidProjectForm(projectName: string, onValid: (projectName: string) => void) {
+    if(!projectName) {
+      this.setState({...this.state, errorMessage: "Please provide a unique project name"});
+      return;
+    }
+
+    onValid(projectName);
   }
 }
 

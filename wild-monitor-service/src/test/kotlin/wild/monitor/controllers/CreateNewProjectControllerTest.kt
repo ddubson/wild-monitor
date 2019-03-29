@@ -58,4 +58,17 @@ class CreateNewProjectControllerTest {
                 .andExpect(status().isBadRequest)
                 .andExpect(jsonPath("$.message").value("Project name has already been taken."))
     }
+
+    @Test
+    fun createNewProject_whenProjectNameIsNotSupplied_shouldReturnBadRequest() {
+        val requestBody = """
+            { "projectName": "" }
+        """.trimIndent()
+        this.mockMvc.perform(post("/projects")
+                .content(requestBody)
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(status().isBadRequest)
+                .andExpect(jsonPath("$.message").value("Project name was not supplied."))
+                .andExpect(jsonPath("$.howToRectify").value("Please provide a unique project name."))
+    }
 }
