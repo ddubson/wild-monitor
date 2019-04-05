@@ -52,20 +52,20 @@ class ProjectsDashboardScene extends PureComponent<AppProps, AppState> {
             {this.state.projects.map(renderProject)}
           </ul>
         </section>
-        <hr />
+        <hr/>
         <section>
-          <CreateProjectScene errorMessage={this.state.errorMessage} addProject={this.addProject} />
+          <CreateProjectScene errorMessage={this.state.errorMessage} addProject={this.addProject}/>
         </section>
       </section>
     );
   }
 
-  public addProject(projectName: string): void {
-    this.withValidProjectForm(projectName, (projectName) => {
+  public addProject(projectNameInput: string): void {
+    this.withValidProjectForm(projectNameInput, (projectName) => {
       this.props.addProject(projectName).then((project: Project) => {
         this.setState({
-          projects: [...this.state.projects, project],
           errorMessage: null,
+          projects: [...this.state.projects, project],
         });
       }).catch((error) => {
         this.setState({...this.state, errorMessage: error});

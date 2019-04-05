@@ -53,8 +53,8 @@ class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOvervi
     super(props);
     const params = new URLSearchParams(this.props.location.search);
     this.state = {
-      projectKey: params.get("projectKey"),
       jobs: [],
+      projectKey: params.get("projectKey"),
     };
   }
 

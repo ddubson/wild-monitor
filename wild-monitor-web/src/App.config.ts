@@ -1,6 +1,6 @@
 import axios, {AxiosInstance} from "axios";
 
-require('dotenv').config();
+require("dotenv").config();
 
 const wildMonitorServiceUrl = process.env.WILDMONITOR_API_URI || "http://localhost:8080";
 
