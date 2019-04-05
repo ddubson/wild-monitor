@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import wild.monitor.WildMonitorTester
@@ -39,7 +39,7 @@ internal class CreateNewJobControllerTest : WildMonitorTester() {
                 { "projectKey": "$projectKey" }
             """.trimIndent()
 
-            this.mockMvc.perform(MockMvcRequestBuilders.post("/jobs")
+            this.mockMvc.perform(post("/jobs")
                     .content(requestBody)
                     .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                     .andExpect(status().isOk)
@@ -58,7 +58,7 @@ internal class CreateNewJobControllerTest : WildMonitorTester() {
             { "projectKey": "$projectKey" }
         """.trimIndent()
 
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/jobs")
+        this.mockMvc.perform(post("/jobs")
                 .content(requestBody)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isBadRequest)

@@ -23,31 +23,6 @@ class CreateNewJobController(val projectRepository: ProjectRepository,
     @ExceptionHandler(ProjectDoesNotExistException::class)
     fun projectDoesNotExistException(e: ProjectDoesNotExistException): ResponseEntity<ErrorResponse> =
             ResponseEntity.badRequest().body(ErrorResponse(e.message
-            ?: "Project does not exist."))
+                    ?: "Project does not exist."))
 
 }
-
-/*
-interface JobRequestSpec<T> {
-    fun onJobCreated(onJobCreated: (job: Job) -> T): JobRequestSpec<T>
-    fun onJobCreationFailure(onJobCreationFailure: (reason: String) -> T): JobRequestSpec<T>
-    fun request(): T
-}
-
-class WebJobRequestSpec(
-        val onJobCreated: (job: Job) -> ResponseEntity<NewJobResponse>
-        = { _ -> throw IllegalStateException("onJobCreated not set.") },
-        val onJobCreationFailure: (reason: String) -> ResponseEntity<NewJobResponse>
-        = { _ -> throw IllegalStateException("onJobCreationFailure not set.") }) : JobRequestSpec<ResponseEntity<NewJobResponse>> {
-    override fun onJobCreated(onJobCreated: (job: Job) -> ResponseEntity<NewJobResponse>): JobRequestSpec<ResponseEntity<NewJobResponse>> {
-        return WebJobRequestSpec(onJobCreated, this.onJobCreationFailure)
-    }
-
-    override fun onJobCreationFailure(onJobCreationFailure: (reason: String) -> ResponseEntity<NewJobResponse>): JobRequestSpec<ResponseEntity<NewJobResponse>> {
-        return WebJobRequestSpec(this.onJobCreated, onJobCreationFailure)
-    }
-
-    override fun request(): ResponseEntity<NewJobResponse> {
-
-    }
-}*/
