@@ -1,10 +1,10 @@
+import moment = require("moment");
 import {PureComponent} from "react";
 import * as React from "react";
-import * as shortid from "shortid";
 import {Link} from "react-router-dom";
-import CreateProjectScene from "./CreateProjectScene";
+import * as shortid from "shortid";
 import {Project} from "../models/Project";
-import moment = require("moment");
+import CreateProjectScene from "./CreateProjectScene";
 
 interface AppProps {
   getAllProjects: () => Promise<Project[]>;
@@ -33,17 +33,17 @@ class ProjectsDashboardScene extends PureComponent<AppProps, AppState> {
     super(props);
     this.addProject = this.addProject.bind(this);
     this.state = {
-      projects: []
-    }
+      projects: [],
+    };
   }
 
-  componentDidMount(): void {
+  public componentDidMount(): void {
     this.props.getAllProjects().then((projects: Project[]) => {
-      this.setState({projects: projects});
-    }).catch(error => console.error(error));
+      this.setState({projects});
+    }).catch((error) => console.error(error));
   }
 
-  render(): React.ReactNode {
+  public render(): React.ReactNode {
     return (
       <section>
         <div className="scene-title"><h3>Projects</h3></div>
@@ -57,24 +57,24 @@ class ProjectsDashboardScene extends PureComponent<AppProps, AppState> {
           <CreateProjectScene errorMessage={this.state.errorMessage} addProject={this.addProject} />
         </section>
       </section>
-    )
+    );
   }
 
-  addProject(projectName: string): void {
+  public addProject(projectName: string): void {
     this.withValidProjectForm(projectName, (projectName) => {
       this.props.addProject(projectName).then((project: Project) => {
         this.setState({
           projects: [...this.state.projects, project],
           errorMessage: null,
         });
-      }).catch(error => {
-        this.setState({...this.state, errorMessage: error})
+      }).catch((error) => {
+        this.setState({...this.state, errorMessage: error});
       });
     });
   }
 
   private withValidProjectForm(projectName: string, onValid: (projectName: string) => void) {
-    if(!projectName) {
+    if (!projectName) {
       this.setState({...this.state, errorMessage: "Please provide a unique project name"});
       return;
     }

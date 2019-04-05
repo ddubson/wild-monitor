@@ -17,10 +17,10 @@ class CreateProjectScene extends PureComponent<CreateProjectSceneProps, CreatePr
     this.setProjectName = this.setProjectName.bind(this);
     this.state = {
       projectName: null,
-    }
+    };
   }
 
-  render(): React.ReactNode {
+  public render(): React.ReactNode {
     return (
       <React.Fragment>
         <div>Create Project</div>
@@ -33,16 +33,16 @@ class CreateProjectScene extends PureComponent<CreateProjectSceneProps, CreatePr
           <input type={"submit"} value={"Add Project"} />
         </form>
       </React.Fragment>
-    )
+    );
   }
 
   private setProjectName(e: ChangeEvent<HTMLInputElement>): void {
-    this.setState({projectName: e.target.value})
+    this.setState({projectName: e.target.value});
   }
 
   private onSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-    this.props.addProject(this.state.projectName)
+    this.props.addProject(this.state.projectName);
   }
 }
 

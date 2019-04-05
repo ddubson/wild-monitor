@@ -1,19 +1,19 @@
+import moment = require("moment");
 import {PureComponent} from "react";
 import * as React from "react";
 import {Link} from "react-router-dom";
-import wildMonitorService from "../App.config";
 import * as shortid from "shortid";
+import wildMonitorService from "../App.config";
 import {Job} from "../models/Job";
-import moment = require("moment");
 
 interface JobsOverviewSceneProps {
-  location: any,
-  getJobsByProjectKey: (projectKey: string) => Promise<Job[]>
+  location: any;
+  getJobsByProjectKey: (projectKey: string) => Promise<Job[]>;
 }
 
 interface JobsOverviewSceneState {
-  jobs: Job[],
-  projectKey: string
+  jobs: Job[];
+  projectKey: string;
 }
 
 const colorMap = (status: string) => {
@@ -47,24 +47,24 @@ const renderJob = (job: Job) =>
   </div>;
 
 class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOverviewSceneState> {
-  eventSource: EventSource;
+  public eventSource: EventSource;
 
   constructor(props: JobsOverviewSceneProps) {
     super(props);
     const params = new URLSearchParams(this.props.location.search);
     this.state = {
-      projectKey: params.get('projectKey'),
-      jobs: []
+      projectKey: params.get("projectKey"),
+      jobs: [],
     };
   }
 
-  componentDidMount(): void {
+  public componentDidMount(): void {
     this.props.getJobsByProjectKey(this.state.projectKey).then((jobs: Job[]) => {
-      this.setState({jobs: [...this.state.jobs, ...jobs]})
+      this.setState({jobs: [...this.state.jobs, ...jobs]});
     });
   }
 
-  render(): React.ReactNode {
+  public render(): React.ReactNode {
     return (
       <div>
         <section>
@@ -81,7 +81,7 @@ class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOvervi
           </code>
         </section>
       </div>
-    )
+    );
   }
 }
 
