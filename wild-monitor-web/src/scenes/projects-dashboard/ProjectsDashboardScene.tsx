@@ -1,9 +1,9 @@
 import {PureComponent} from "react";
 import * as React from "react";
 import {Link} from "react-router-dom";
-import CreateProjectForm from "./CreateProjectForm";
-import {Project} from "../../models/Project";
 import * as shortid from "shortid";
+import {Project} from "../../models/Project";
+import CreateProjectForm from "./CreateProjectForm";
 
 interface AppProps {
   getAllProjects: () => Promise<Project[]>;

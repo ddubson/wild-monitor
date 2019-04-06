@@ -13,14 +13,12 @@ jobs:
         - npm i -g npm yarn
       before_script:
         - export PATH=$PATH:$TRAVIS_BUILD_DIR/wild-monitor-web/node_modules/.bin
-        - cd $TRAVIS_BUILD_DIR/wild-monitor-web
-        - yarn install
+        - ./gradlew :wild-monitor-web:yarn_install
       script:
-        - yarn lint
-        - yarn test
-        - yarn build:prod
-        - cd $TRAVIS_BUILD_DIR
-        - ./gradlew clean :wild-monitor-service:build --no-daemon
+        - ./gradlew :wild-monitor-web:yarnLint
+        - ./gradlew :wild-monitor-web:yarnTest
+        - ./gradlew :wild-monitor-web:yarnBuildProd
+        - ./gradlew :wild-monitor-service:build
       deploy:
         provider: cloudfoundry
         api: https://api.run.pcfone.io

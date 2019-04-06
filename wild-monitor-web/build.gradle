@@ -1,0 +1,21 @@
+import com.moowork.gradle.node.yarn.YarnTask
+
+plugins {
+    id "com.moowork.node" version "1.3.1"
+}
+
+task yarnTest(type: YarnTask) {
+    args = ['test']
+}
+
+task yarnLint(type: YarnTask) {
+    args = ['lint']
+}
+
+task yarnBuildProd(type: YarnTask) {
+    args = ['build:prod']
+}
+
+node {
+    version = "11.9.0"
+}
