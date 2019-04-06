@@ -1,8 +1,8 @@
 import * as React from "react";
 import {PureComponent} from "react";
-import {BrowserRouter as Router, Link, Route} from "react-router-dom";
+import ProjectsDashboardScene from "./scenes/projects-dashboard/ProjectsDashboardScene";
+import {BrowserRouter as Router, Route} from "react-router-dom";
 import JobsOverviewScene from "./scenes/JobsOverviewScene";
-import ProjectsDashboardScene from "./scenes/ProjectsDashboardScene";
 import {AddProject, getAllProjects, getJobsByProjectKey} from "./services/WildMonitorServiceAdapter";
 
 class App extends PureComponent {

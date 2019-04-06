@@ -1,10 +1,10 @@
-import ProjectsDashboardScene from "../../src/scenes/ProjectsDashboardScene";
+import ProjectsDashboardScene from "../../../src/scenes/projects-dashboard/ProjectsDashboardScene";
 import * as React from "react";
 import {mount, ReactWrapper} from "enzyme";
-import {Project} from "../../src/models/Project";
+import {Project} from "../../../src/models/Project";
 import {MemoryRouter} from "react-router";
-import {findOrFail, getTextByClassName} from "../helpers/enzyme-helpers";
-import {emptyAddProjectPromise, emptyPromiseOfProjects} from "../helpers/Promises";
+import {findOrFail, getTextByClassName} from "../../helpers/enzyme-helpers";
+import {emptyAddProjectPromise, emptyPromiseOfProjects} from "../../helpers/Promises";
 
 describe("Projects Dashboard Scene", () => {
   let scene: ReactWrapper;

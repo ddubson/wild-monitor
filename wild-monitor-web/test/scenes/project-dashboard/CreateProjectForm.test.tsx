@@ -1,15 +1,15 @@
 import {mount, ReactWrapper} from "enzyme";
-import {getTextByClassName} from "../helpers/enzyme-helpers";
+import {getTextByClassName} from "../../helpers/enzyme-helpers";
 import * as React from "react";
-import CreateProjectScene from "../../src/scenes/CreateProjectScene";
-import {emptyAddProjectPromise} from "../helpers/Promises";
+import CreateProjectForm from "../../../src/scenes/projects-dashboard/CreateProjectForm";
+import {emptyAddProjectPromise} from "../../helpers/Promises";
 
-describe("Create Project Scene", () => {
+describe("Create Project Form", () => {
   let scene: ReactWrapper;
 
   describe("when an error message is not present", () => {
     beforeEach(() => {
-      scene = mount(<CreateProjectScene addProject={emptyAddProjectPromise} />);
+      scene = mount(<CreateProjectForm addProject={emptyAddProjectPromise} />);
     });
 
     it("should not display the error message", () => {
@@ -20,7 +20,7 @@ describe("Create Project Scene", () => {
   describe("when an error message is present", () => {
     const errorMessage = "Project name has already been taken.";
     beforeEach(() => {
-      scene = mount(<CreateProjectScene errorMessage={errorMessage} addProject={emptyAddProjectPromise} />);
+      scene = mount(<CreateProjectForm errorMessage={errorMessage} addProject={emptyAddProjectPromise} />);
     });
 
     it("should display the error message", () => {

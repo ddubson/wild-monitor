@@ -1,10 +1,9 @@
-import moment = require("moment");
 import {PureComponent} from "react";
 import * as React from "react";
 import {Link} from "react-router-dom";
+import CreateProjectForm from "./CreateProjectForm";
+import {Project} from "../../models/Project";
 import * as shortid from "shortid";
-import {Project} from "../models/Project";
-import CreateProjectScene from "./CreateProjectScene";
 
 interface AppProps {
   getAllProjects: () => Promise<Project[]>;
@@ -54,7 +53,7 @@ class ProjectsDashboardScene extends PureComponent<AppProps, AppState> {
         </section>
         <hr/>
         <section>
-          <CreateProjectScene errorMessage={this.state.errorMessage} addProject={this.addProject}/>
+          <CreateProjectForm errorMessage={this.state.errorMessage} addProject={this.addProject} />
         </section>
       </section>
     );

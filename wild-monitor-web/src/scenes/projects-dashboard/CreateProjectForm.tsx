@@ -10,7 +10,7 @@ interface CreateProjectSceneState {
   projectName: string;
 }
 
-class CreateProjectScene extends PureComponent<CreateProjectSceneProps, CreateProjectSceneState> {
+class CreateProjectForm extends PureComponent<CreateProjectSceneProps, CreateProjectSceneState> {
   constructor(props: CreateProjectSceneProps) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
@@ -46,4 +46,4 @@ class CreateProjectScene extends PureComponent<CreateProjectSceneProps, CreatePr
   }
 }
 
-export default CreateProjectScene;
+export default CreateProjectForm;
