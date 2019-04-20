@@ -26,8 +26,8 @@ describe("Jobs Dashboard Scene", () => {
   describe("When project has jobs", () => {
     beforeEach(() => {
       const jobs: Job[] = [
-        {id: "1", projectKey: "1p", status: "PENDING", createdOn: "2019-01-01"},
-        {id: "2", projectKey: "2p", status: "STARTED", createdOn: "2018-12-19"}
+        {jobId: "1", projectKey: "1p", status: "PENDING", createdOn: "2019-01-01"},
+        {jobId: "2", projectKey: "2p", status: "STARTED", createdOn: "2018-12-19"}
       ];
 
       const promiseOfJobs: (projectKey: string) => Promise<Job[]> =

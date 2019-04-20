@@ -3,6 +3,7 @@ package wild.monitor.usecases.web
 import wild.monitor.NoProjectNameSuppliedException
 import wild.monitor.ProjectNameTakenException
 import wild.monitor.controllers.ProjectResponse
+import wild.monitor.models.Project
 import wild.monitor.repositories.ProjectRepository
 import wild.monitor.usecases.CreateProjectUseCase
 
@@ -16,7 +17,7 @@ class CreateProjectWebUseCase(private val projectRepository: ProjectRepository) 
             throw ProjectNameTakenException()
         }
 
-        val project = projectRepository.addProject(projectName)
+        val project = projectRepository.save(Project(projectName))
         return ProjectResponse.fromProject(project)
     }
 }

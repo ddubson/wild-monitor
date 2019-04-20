@@ -39,7 +39,7 @@ const renderJob = (job: Job) =>
     <h5 className="card-header" data-test="job-item-header"
         style={{color: colorMap(job.status), backgroundColor: "black"}}>{job.status}</h5>
     <div className="card-body" data-test="job-item-body">
-      <h6 data-test="job-item-id" className="card-subtitle mb-2 text-muted">{job.id}</h6>
+      <h6 data-test="job-item-id" className="card-subtitle mb-2 text-muted">{job.jobId}</h6>
       <div data-test="job-item-created-on"
            style={{fontSize: "11px", color: "lightgrey"}}>
         {moment(job.createdOn).fromNow()} ({job.createdOn})</div>
@@ -47,8 +47,6 @@ const renderJob = (job: Job) =>
   </div>;
 
 class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOverviewSceneState> {
-  public eventSource: EventSource;
-
   constructor(props: JobsOverviewSceneProps) {
     super(props);
     const params = new URLSearchParams(this.props.location.search);

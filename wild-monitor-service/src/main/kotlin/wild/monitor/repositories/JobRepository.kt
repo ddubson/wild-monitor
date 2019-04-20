@@ -1,10 +1,13 @@
 package wild.monitor.repositories
 
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 import wild.monitor.models.Job
+import wild.monitor.models.Project
+import java.util.*
 
-interface JobRepository {
-    fun newJob(projectKey: String): Job
-    fun getJobById(jobId: String): Job
-    fun getJobsByProjectKey(projectKey: String): List<Job>
-    fun replaceExistingJob(newJob: Job)
+@Repository
+interface JobRepository: JpaRepository<Job, Integer> {
+    fun findByJobId(jobId: UUID): Job?
+    fun findJobsByProject(project: Project): List<Job>
 }

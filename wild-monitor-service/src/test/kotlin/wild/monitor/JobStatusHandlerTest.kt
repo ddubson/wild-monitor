@@ -5,42 +5,47 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import wild.monitor.models.Job
 import wild.monitor.models.JobStatus
+import wild.monitor.models.Project
 import java.util.*
 
 class JobStatusHandlerTest {
     @Test
     @DisplayName("Status: Pending -> Started")
     fun progressToNextState_whenProgressingFromPendingToStarted_thenItShouldSucceed() {
-        val job = Job(UUID.randomUUID(), JobStatus.PENDING, "projectkey")
+        val project = Project("Test Project")
+        val job = Job(UUID.randomUUID(), JobStatus.PENDING, project)
         val actualJob: Job = job.progressToNextState(JobStatus.STARTED)
-        assertThat(actualJob.id).isEqualTo(job.id)
+        assertThat(actualJob.jobId).isEqualTo(job.jobId)
         assertThat(actualJob.status).isEqualTo(JobStatus.STARTED)
     }
 
     @Test
     @DisplayName("Status: Started -> Succeeded")
     fun progressToNextState_whenProgressingFromStartedToSucceeded_thenItShouldSucceed() {
-        val job = Job(UUID.randomUUID(), JobStatus.STARTED, "projectkey")
+        val project = Project("Test Project")
+        val job = Job(UUID.randomUUID(), JobStatus.STARTED, project)
         val actualJob: Job = job.progressToNextState(JobStatus.SUCCEEDED)
-        assertThat(actualJob.id).isEqualTo(job.id)
+        assertThat(actualJob.jobId).isEqualTo(job.jobId)
         assertThat(actualJob.status).isEqualTo(JobStatus.SUCCEEDED)
     }
 
     @Test
     @DisplayName("Status: Started -> Failed")
     fun progressToNextState_whenProgressingFromStartedToFailed_thenItShouldSucceed() {
-        val job = Job(UUID.randomUUID(), JobStatus.STARTED, "projectkey")
+        val project = Project("Test Project")
+        val job = Job(UUID.randomUUID(), JobStatus.STARTED, project)
         val actualJob: Job = job.progressToNextState(JobStatus.FAILED)
-        assertThat(actualJob.id).isEqualTo(job.id)
+        assertThat(actualJob.jobId).isEqualTo(job.jobId)
         assertThat(actualJob.status).isEqualTo(JobStatus.FAILED)
     }
 
     @Test
     @DisplayName("Status: Started -> Expired")
     fun progressToNextState_whenProgressingFromStartedToExpired_thenItShouldSucceed() {
-        val job = Job(UUID.randomUUID(), JobStatus.STARTED, "projectkey")
+        val project = Project("Test Project")
+        val job = Job(UUID.randomUUID(), JobStatus.STARTED, project)
         val actualJob: Job = job.progressToNextState(JobStatus.EXPIRED)
-        assertThat(actualJob.id).isEqualTo(job.id)
+        assertThat(actualJob.jobId).isEqualTo(job.jobId)
         assertThat(actualJob.status).isEqualTo(JobStatus.EXPIRED)
     }
 }

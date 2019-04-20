@@ -1,11 +1,11 @@
 package wild.monitor.repositories
 
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 import wild.monitor.models.Project
 
-interface ProjectRepository {
-    fun existsByProjectKey(projectKey: String): Boolean
+@Repository
+interface ProjectRepository: JpaRepository<Project, Integer> {
+    fun findByProjectKey(projectKey: String): Project?
     fun existsByProjectName(projectName: String): Boolean
-    fun addProject(projectName: String): Project
-    fun fetchAll(): List<Project>
-    fun clear()
 }

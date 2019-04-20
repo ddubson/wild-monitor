@@ -1,5 +1,5 @@
 export interface Job {
-  id: string;
+  jobId: string;
   projectKey: string;
   status: string;
   createdOn: string;

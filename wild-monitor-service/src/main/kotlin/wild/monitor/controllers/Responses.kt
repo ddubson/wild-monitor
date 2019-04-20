@@ -18,13 +18,17 @@ data class ProjectResponse(val id: String,
     }
 }
 
-data class JobResponse(val id: String,
+data class JobResponse(val jobId: String,
                        val status: JobStatus,
                        val projectKey: String,
+                       val expiresOn: String,
                        val createdOn: String) {
     companion object {
         fun fromJob(job: Job): JobResponse =
-                JobResponse(job.id.toString(), job.status, job.projectKey,
+                JobResponse(jobId = job.jobId.toString(),
+                        status = job.status,
+                        projectKey = job.project.projectKey,
+                        expiresOn = job.expiresOn.format(DateTimeFormatter.ISO_DATE_TIME),
                         createdOn = job.createdOn.format(DateTimeFormatter.ISO_DATE_TIME))
     }
 }

@@ -6,13 +6,14 @@ import wild.monitor.models.JobStatus
 fun Job.progressToNextState(nextStatus: JobStatus): Job {
     return when (nextStatus) {
         JobStatus.STARTED -> if (this.status == JobStatus.PENDING)
-            copy(id = this.id, status = JobStatus.STARTED, projectKey = this.projectKey) else unknownJobStatus()
-        JobStatus.SUCCEEDED -> if (this.status == JobStatus.STARTED)
-            copy(id = this.id, status = JobStatus.SUCCEEDED, projectKey = this.projectKey) else unknownJobStatus()
+            Job(jobId = this.jobId, status = JobStatus.STARTED, project = this.project) else unknownJobStatus()
+        JobStatus.SUCCEEDED
+        -> if (this.status == JobStatus.STARTED)
+            Job(jobId = this.jobId, status = JobStatus.SUCCEEDED, project = this.project) else unknownJobStatus()
         JobStatus.FAILED -> if(this.status == JobStatus.STARTED)
-            copy(id = this.id, status = JobStatus.FAILED, projectKey = this.projectKey) else unknownJobStatus()
+            Job(jobId = this.jobId, status = JobStatus.FAILED, project = this.project) else unknownJobStatus()
         JobStatus.EXPIRED -> if(this.status == JobStatus.STARTED)
-            copy(id = this.id, status = JobStatus.EXPIRED, projectKey = this.projectKey) else unknownJobStatus()
+            Job(jobId = this.jobId, status = JobStatus.EXPIRED, project = this.project) else unknownJobStatus()
         else -> unknownJobStatus()
     }
 }

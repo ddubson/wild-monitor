@@ -40,7 +40,7 @@ class EventHoseController {
                 // emitter.complete();
                 // SseEventBuilder builder = SseEmitter.event().name("second").data("1");
                 // SseEventBuilder builder =
-                // SseEmitter.event().reconnectTime(10_000L).data(jobEvent).id("1");
+                // SseEmitter.event().reconnectTime(10_000L).data(jobEvent).jobId("1");
                 // emitter.send(builder);
             } catch (e: Exception) {
                 deadEmitters.add(emitter)

@@ -13,6 +13,6 @@ import wild.monitor.repositories.ProjectRepository
 class GetProjectsController(val projectRepository: ProjectRepository){
     @GetMapping(produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
     fun getAllProjects(): ResponseEntity<List<ProjectResponse>>  {
-        return ok(projectRepository.fetchAll().map { ProjectResponse.fromProject(it) })
+        return ok(projectRepository.findAll().map { ProjectResponse.fromProject(it) })
     }
 }

@@ -1,1 +1,10 @@
-cors.origins: http://localhost:1234
+cors:
+  origins: http://localhost:1234
+
+spring:
+  flyway:
+    user: sa
+    password:
+    url: jdbc:h2:mem:wild_monitor_db?MODE=PostgreSQL
+    locations: classpath:db/migration
+    enabled: true
