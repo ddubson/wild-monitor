@@ -29,5 +29,6 @@ CREATE TABLE jobs_record
 (
     db_id      SERIAL PRIMARY KEY,
     meta_db_id INTEGER REFERENCES jobs_meta (db_id),
+    updated_on DATETIME   NOT NULL,
     status     JOB_STATUS NOT NULL
 );

@@ -29,6 +29,9 @@ class Job(@Column(name="job_id") val jobId: UUID,
     @Column(name = "created_on")
     val createdOn = LocalDateTime.now()!!
 
+    @Column(name = "updated_on")
+    val updatedOn = LocalDateTime.now()!!
+
     @Column(name = "expires_on")
     val expiresOn = createdOn.plusHours(1)!!
 }

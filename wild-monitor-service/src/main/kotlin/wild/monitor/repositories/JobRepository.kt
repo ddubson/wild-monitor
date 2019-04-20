@@ -7,7 +7,8 @@ import wild.monitor.models.Project
 import java.util.*
 
 @Repository
-interface JobRepository: JpaRepository<Job, Integer> {
+interface JobRepository: JpaRepository<Job, Int> {
     fun findByJobId(jobId: UUID): Job?
     fun findJobsByProject(project: Project): List<Job>
+    fun findTopByJobIdOrderByUpdatedOnDesc(jobId: UUID): Job?
 }

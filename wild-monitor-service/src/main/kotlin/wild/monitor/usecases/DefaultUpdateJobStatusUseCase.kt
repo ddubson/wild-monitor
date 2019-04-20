@@ -8,7 +8,7 @@ import java.util.*
 
 class DefaultUpdateJobStatusUseCase(private val jobRepository: JobRepository): UpdateJobStatusUseCase {
     override fun updateJobStatus(jobId: String, newStatus: JobStatus): Job {
-        val job = jobRepository.findByJobId(UUID.fromString(jobId))
+        val job = jobRepository.findTopByJobIdOrderByUpdatedOnDesc(UUID.fromString(jobId))
         return jobRepository.save(job!!.progressToNextState(newStatus))
     }
 }

@@ -3,4 +3,6 @@ export interface Job {
   projectKey: string;
   status: string;
   createdOn: string;
+  expiresOn: string;
+  updatedOn: string;
 }
