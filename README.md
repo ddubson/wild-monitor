@@ -8,6 +8,8 @@ An ancillary system that receives minimal signal data from an external CI/CD pip
 used for tracking and visualizing trends. The goal is to use WebHooks with minimal request data
 to send general data about a CI job from an external system.
 
+[Feature and Issue Tracker](https://www.pivotaltracker.com/n/projects/2318698)
+
 ## Running
 
 ### Running Locally
@@ -37,7 +39,6 @@ accessible via `http://localhost:8080`
 - `PENDING`
 - `STARTED`
 - `FAILED`
-- `STOPPED`
 - `SUCCEEDED`
 - `EXPIRED`
 
