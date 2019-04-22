@@ -16,7 +16,9 @@ class GetJobsByProjectController(val jobRepository: JobRepository,
     @GetMapping("/jobs", produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
     fun getJobsByProjectKey(@RequestParam("projectKey") projectKey: String): ResponseEntity<List<JobResponse>> {
         val project = projectRepository.findByProjectKey(projectKey) ?: throw ProjectNotFoundException()
-        return ok(jobRepository.findJobsByProject(project).map { JobResponse.fromJob(it) })
+        val allJobsInProject = jobRepository.findJobsByProject(project)
+        val groupedJobs = allJobsInProject.groupBy { it.jobId }
+        return ok(groupedJobs.values.map { JobResponse.fromGroupedJobs(it) })
     }
 
 }

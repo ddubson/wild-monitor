@@ -14,7 +14,7 @@ import java.util.*
 class GetJobByIdController(val jobRepository: JobRepository) {
     @GetMapping("/jobs/{jobId}", produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
     fun getExistingJob(@PathVariable("jobId") jobId: String): ResponseEntity<JobResponse> =
-            ResponseEntity.ok(JobResponse.fromJob(jobRepository.findByJobId(UUID.fromString(jobId))
+            ResponseEntity.ok(JobResponse.fromGroupedJobs(listOf(jobRepository.findByJobId(UUID.fromString(jobId))!!)
                     ?: throw JobNotFoundException()))
 
     @ExceptionHandler(JobNotFoundException::class)

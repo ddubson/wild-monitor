@@ -18,8 +18,8 @@ class UpdateJobStatusController(private val updateJobStatusUseCase: UpdateJobSta
     fun updateJobStatus(@PathVariable("jobId") jobId: String,
                         @RequestBody jobStatusRequest: UpdateJobStatusRequest): ResponseEntity<JobResponse> {
         return ok(
-                JobResponse.fromJob(
-                        updateJobStatusUseCase.updateJobStatus(jobId,
-                                JobStatus.valueOf(jobStatusRequest.newStatus))))
+                JobResponse.fromGroupedJobs(
+                        listOf(updateJobStatusUseCase.updateJobStatus(jobId,
+                                JobStatus.valueOf(jobStatusRequest.newStatus)))))
     }
 }
