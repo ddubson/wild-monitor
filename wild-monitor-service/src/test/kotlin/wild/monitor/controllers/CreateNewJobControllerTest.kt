@@ -2,6 +2,8 @@ package wild.monitor.controllers
 
 import io.mockk.every
 import io.mockk.mockk
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -61,11 +63,12 @@ internal class CreateNewJobControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.jobId").isNotEmpty)
-                .andExpect(jsonPath("$.status").value("PENDING"))
                 .andExpect(jsonPath("$.projectKey").value(existingProject.projectKey))
                 .andExpect(jsonPath("$.expiresOn").value(isISODateTimeCloseTo(anHourFromNow())))
-                .andExpect(jsonPath("$.createdOn")
-                        .value(isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$.createdOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$.stateLog", hasSize<Any>(equalTo(1))))
+                .andExpect(jsonPath("$.stateLog[0].status").value("PENDING"))
+                .andExpect(jsonPath("$.stateLog[0].updatedOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
     }
 
     @Test

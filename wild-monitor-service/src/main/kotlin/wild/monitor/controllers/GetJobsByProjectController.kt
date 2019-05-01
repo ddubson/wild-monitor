@@ -20,5 +20,4 @@ class GetJobsByProjectController(val jobRepository: JobRepository,
         val groupedJobs = allJobsInProject.groupBy { it.jobId }
         return ok(groupedJobs.values.map { JobResponse.fromGroupedJobs(it) })
     }
-
 }

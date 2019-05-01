@@ -2,11 +2,11 @@ export interface Job {
   jobId: string;
   projectKey: string;
   createdOn: string;
-  records: JobRecord[];
+  expiresOn: string;
+  stateLog: JobStateLog[];
 }
 
-export interface JobRecord {
+export interface JobStateLog {
   status: string;
-  expiresOn: string;
   updatedOn: string;
 }

@@ -2,6 +2,8 @@ package wild.monitor.controllers
 
 import io.mockk.every
 import io.mockk.mockk
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -47,20 +49,42 @@ class GetJobsByProjectControllerTest {
     @Test
     fun getJobsByProjectKey_whenProvidedValidProjectKey_returnsArrayOfJobsAssociated() {
         val existingProject = Project("My Example Project")
-        val job = Job(UUID.randomUUID(), JobStatus.PENDING, existingProject)
+
+        val job1Id = UUID.randomUUID()
+        val job2Id = UUID.randomUUID()
+
+        val job1A = Job(job1Id, JobStatus.PENDING, existingProject)
+        val job1B = Job(job1Id, JobStatus.STARTED, existingProject)
+        val job1C = Job(job1Id, JobStatus.SUCCEEDED, existingProject)
+        val job2A = Job(job2Id, JobStatus.PENDING, existingProject)
+        val job2B = Job(job2Id, JobStatus.STARTED, existingProject)
+
         every { projectRepository.findByProjectKey(existingProject.projectKey) } returns existingProject
-        every { jobRepository.findJobsByProject(existingProject) } returns listOf(job)
+        every { jobRepository.findJobsByProject(existingProject) } returns listOf(job1A, job1B, job1C, job2A, job2B)
 
         this.mockMvc.perform(get("/jobs")
                 .param("projectKey", existingProject.projectKey))
                 .andExpect(status().isOk)
-                .andExpect(jsonPath("$[0].jobId").value(job.jobId.toString()))
-                .andExpect(jsonPath("$[0].status").value("PENDING"))
+                .andExpect(jsonPath("$[0].jobId").value(job1A.jobId.toString()))
                 .andExpect(jsonPath("$[0].projectKey").value(existingProject.projectKey))
-                .andExpect(jsonPath("$[0].expiresOn")
-                        .value(isISODateTimeCloseTo(anHourFromNow())))
-                .andExpect(jsonPath("$[0].createdOn")
-                        .value(isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$[0].createdOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$[0].expiresOn").value(isISODateTimeCloseTo(anHourFromNow())))
+                .andExpect(jsonPath("$[0].stateLog", hasSize<Any>(equalTo(3))))
+                .andExpect(jsonPath("$[0].stateLog[0].status").value("PENDING"))
+                .andExpect(jsonPath("$[0].stateLog[0].updatedOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$[0].stateLog[1].status").value("STARTED"))
+                .andExpect(jsonPath("$[0].stateLog[1].updatedOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$[0].stateLog[2].status").value("SUCCEEDED"))
+                .andExpect(jsonPath("$[0].stateLog[2].updatedOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$[1].stateLog", hasSize<Any>(equalTo(2))))
+                .andExpect(jsonPath("$[1].jobId").value(job2A.jobId.toString()))
+                .andExpect(jsonPath("$[1].projectKey").value(existingProject.projectKey))
+                .andExpect(jsonPath("$[1].createdOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$[1].expiresOn").value(isISODateTimeCloseTo(anHourFromNow())))
+                .andExpect(jsonPath("$[1].stateLog[0].status").value("PENDING"))
+                .andExpect(jsonPath("$[1].stateLog[0].updatedOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$[1].stateLog[1].status").value("STARTED"))
+                .andExpect(jsonPath("$[1].stateLog[1].updatedOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
     }
 
     @Test

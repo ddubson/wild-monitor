@@ -2,6 +2,8 @@ package wild.monitor.controllers
 
 import io.mockk.every
 import io.mockk.mockk
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,11 +11,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
-import org.springframework.http.MediaType
+import org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import wild.monitor.helpers.IsISODateTimeCloseTo
 import wild.monitor.helpers.anHourFromNow
 import wild.monitor.helpers.dateTimeRightNow
@@ -50,23 +53,26 @@ class UpdateJobStatusControllerTest {
     @Test
     fun updateJobStatus_whenNextLogicalStatusIsProvided_thenShouldUpdateTheStatusOfJob() {
         val existingProject = Project("Test Project")
-        val existingJob = Job(UUID.randomUUID(), JobStatus.PENDING, existingProject)
+        val jobId = UUID.randomUUID()
+        val existingJob = Job(jobId, JobStatus.PENDING, existingProject)
         val newJob = Job(existingJob.jobId, JobStatus.STARTED, existingProject)
 
         every { projectRepository.findByProjectKey(existingProject.projectKey) } returns existingProject
-        every { jobRepository.findByJobId(existingJob.jobId) } returns existingJob
+        every { jobRepository.findTopByJobIdOrderByUpdatedOnDesc(eq(jobId)) } returns existingJob
         every { jobRepository.save(any<Job>()) } returns newJob
 
-        this.mockMvc.perform(MockMvcRequestBuilders.patch("/jobs/${existingJob.jobId}")
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+        this.mockMvc.perform(patch("/jobs/${existingJob.jobId}")
+                .contentType(APPLICATION_JSON_UTF8_VALUE)
                 .content("""{ "newStatus": "STARTED" }"""))
-                .andExpect(MockMvcResultMatchers.status().isOk)
-                .andExpect(MockMvcResultMatchers.jsonPath("$.jobId").value(newJob.jobId.toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("STARTED"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.projectKey").value(existingProject.projectKey))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.createdOn").value(
-                        IsISODateTimeCloseTo.isISODateTimeCloseTo(dateTimeRightNow())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.expiresOn")
-                        .value(IsISODateTimeCloseTo.isISODateTimeCloseTo(anHourFromNow())))
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.jobId").value(newJob.jobId.toString()))
+                .andExpect(jsonPath("$.projectKey").value(existingProject.projectKey))
+                .andExpect(jsonPath("$.expiresOn").value(IsISODateTimeCloseTo.isISODateTimeCloseTo(anHourFromNow())))
+                .andExpect(jsonPath("$.createdOn").value(IsISODateTimeCloseTo.isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$.stateLog", hasSize<Any>(equalTo(2))))
+                .andExpect(jsonPath("$.stateLog[0].status").value("PENDING"))
+                .andExpect(jsonPath("$.stateLog[0].updatedOn").value(IsISODateTimeCloseTo.isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$.stateLog[1].status").value("STARTED"))
+                .andExpect(jsonPath("$.stateLog[1].updatedOn").value(IsISODateTimeCloseTo.isISODateTimeCloseTo(dateTimeRightNow())))
     }
 }

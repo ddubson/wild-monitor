@@ -41,7 +41,10 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(module = "junit")
         exclude(module = "mockito-core")
+        exclude(module = "hamcrest-core")
+        exclude(module = "hamcrest-library")
     }
+    testImplementation("org.hamcrest:hamcrest-library:1.3")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }

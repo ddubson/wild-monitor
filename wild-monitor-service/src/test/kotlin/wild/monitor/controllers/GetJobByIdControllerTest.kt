@@ -2,6 +2,8 @@ package wild.monitor.controllers
 
 import io.mockk.every
 import io.mockk.mockk
+import org.hamcrest.Matchers.equalTo
+import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -54,19 +56,18 @@ class GetJobByIdControllerTest {
         this.mockMvc.perform(get("/jobs/${job.jobId}"))
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.jobId").value(job.jobId.toString()))
-                .andExpect(jsonPath("$.status").value("PENDING"))
                 .andExpect(jsonPath("$.projectKey").value(existingProject.projectKey))
-                .andExpect(jsonPath("$.expiresOn")
-                        .value(isISODateTimeCloseTo(anHourFromNow())))
-                .andExpect(jsonPath("$.createdOn")
-                        .value(isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$.expiresOn").value(isISODateTimeCloseTo(anHourFromNow())))
+                .andExpect(jsonPath("$.createdOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$.stateLog", hasSize<Any>(equalTo(1))))
+                .andExpect(jsonPath("$.stateLog[0].status").value("PENDING"))
+                .andExpect(jsonPath("$.stateLog[0].updatedOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
     }
 
     @Test
     fun getJob_whenProvidedNonExistentJobId_returnsJobNotFoundError() {
         val invalidId = UUID.randomUUID()
         every { jobRepository.findByJobId(invalidId) } returns null
-        this.mockMvc.perform(get("/jobs/$invalidId"))
-                .andExpect(status().isNotFound)
+        this.mockMvc.perform(get("/jobs/$invalidId")).andExpect(status().isNotFound)
     }
 }

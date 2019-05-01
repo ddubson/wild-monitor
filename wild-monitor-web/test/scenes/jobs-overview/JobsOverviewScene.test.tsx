@@ -30,10 +30,10 @@ describe("Jobs Dashboard Scene", () => {
           jobId: "1",
           projectKey: "1p",
           createdOn: "2019-01-01",
-          records: [
+          expiresOn: "2020-01-01",
+          stateLog: [
             {
               status: "PENDING",
-              expiresOn: "2020-01-01",
               updatedOn: "2019-01-01"
             }
           ]
@@ -42,18 +42,17 @@ describe("Jobs Dashboard Scene", () => {
           jobId: "2",
           projectKey: "2p",
           createdOn: "2018-12-19",
-          records: [
+          expiresOn: "2019-01-01",
+          stateLog: [
             {
               status: "STARTED",
-              updatedOn: "2018-12-19",
-              expiresOn: "2019-01-01"
+              updatedOn: "2018-12-19"
             }
           ]
         }
       ];
 
-      const promiseOfJobs: (projectKey: string) => Promise<Job[]> =
-        () => Promise.resolve(jobs);
+      const promiseOfJobs: (projectKey: string) => Promise<Job[]> = () => Promise.resolve(jobs);
       scene = mount(<MemoryRouter initialEntries={["/"]} initialIndex={1}>
         <JobsOverviewScene location={{search: "?projectKey=1p"}} getJobsByProjectKey={promiseOfJobs}/>
       </MemoryRouter>);
