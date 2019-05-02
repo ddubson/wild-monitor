@@ -1,10 +1,10 @@
 import {PureComponent} from "react";
 import * as React from "react";
 import {Link} from "react-router-dom";
+import shortid = require("shortid");
 import wildMonitorService from "../../App.config";
 import {Job} from "../../models/Job";
 import {JobDetails} from "./JobDetails";
-import shortid = require("shortid");
 
 interface JobsOverviewSceneProps {
   location: any;
@@ -42,7 +42,7 @@ class JobsOverviewScene extends PureComponent<JobsOverviewSceneProps, JobsOvervi
           <Link to={"/"}> &gt;&gt; Projects</Link>
         </section>
         <section style={{marginTop: "15px"}} data-test="jobs-list">
-          {jobs.length !== 0 ? jobs.map(job => <JobDetails key={shortid.generate()} job={job}/>) : "No jobs yet."}
+          {jobs.length !== 0 ? jobs.map((job) => <JobDetails key={shortid.generate()} job={job}/>) : "No jobs yet."}
         </section>
         <section style={{marginTop: "15px"}}>
           <p>To create a job, execute the following:</p>
