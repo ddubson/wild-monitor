@@ -9,20 +9,18 @@ interface JobDetailsProps {
 }
 
 export const JobDetails = ({job}: JobDetailsProps) =>
-  <div className="card mt-3" data-test="job-item" key={shortid.generate()}
-       style={{width: "18rem"}}>
+  <div className="card mt-3" data-test="job-item" key={shortid.generate()}>
     <h5 className="card-header" data-test="job-item-header"
         style={{
           color: colorMap(job.stateLog[0].status),
           backgroundColor: "black"
         }}>{job.stateLog[0].status}</h5>
     <div className="card-body" data-test="job-item-body">
-      <h6 data-test="job-item-id" className="card-subtitle mb-2 text-muted">{job.jobId}</h6>
-      {job.stateLog.map((jobStateLog: JobStateLog) => <div
-        key={shortid.generate()}>{jobStateLog.status} &lt;- {jobStateLog.updatedOn}</div>)}
+      {job.stateLog.map((jobStateLog: JobStateLog) => <p
+        key={shortid.generate()} style={{color: "grey"}}>{jobStateLog.status} ({moment(jobStateLog.updatedOn).fromNow()})</p>)}
       <div data-test="job-item-created-on"
-           style={{fontSize: "11px", color: "lightgrey"}}>
-        {moment(job.createdOn).fromNow()} ({job.createdOn})
+           style={{fontSize: "11px", color: "grey"}}>
+        Created {moment(job.createdOn).fromNow()} ({job.createdOn})
       </div>
     </div>
   </div>;

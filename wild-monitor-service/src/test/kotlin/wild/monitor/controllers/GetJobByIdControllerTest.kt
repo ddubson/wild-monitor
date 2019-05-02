@@ -51,7 +51,7 @@ class GetJobByIdControllerTest {
         val existingProject = Project("My Example Project")
         val job = Job(UUID.randomUUID(), JobStatus.PENDING, existingProject)
         every { projectRepository.findByProjectKey(existingProject.projectKey) } returns existingProject
-        every { jobRepository.findByJobId(job.jobId) } returns job
+        every { jobRepository.findByJobId(job.jobId) } returns listOf(job)
 
         this.mockMvc.perform(get("/jobs/${job.jobId}"))
                 .andExpect(status().isOk)
@@ -62,12 +62,5 @@ class GetJobByIdControllerTest {
                 .andExpect(jsonPath("$.stateLog", hasSize<Any>(equalTo(1))))
                 .andExpect(jsonPath("$.stateLog[0].status").value("PENDING"))
                 .andExpect(jsonPath("$.stateLog[0].updatedOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
-    }
-
-    @Test
-    fun getJob_whenProvidedNonExistentJobId_returnsJobNotFoundError() {
-        val invalidId = UUID.randomUUID()
-        every { jobRepository.findByJobId(invalidId) } returns null
-        this.mockMvc.perform(get("/jobs/$invalidId")).andExpect(status().isNotFound)
     }
 }

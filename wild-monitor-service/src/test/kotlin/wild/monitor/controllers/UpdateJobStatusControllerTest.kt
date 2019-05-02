@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import wild.monitor.helpers.IsISODateTimeCloseTo
+import wild.monitor.helpers.IsISODateTimeCloseTo.Companion.isISODateTimeCloseTo
 import wild.monitor.helpers.anHourFromNow
 import wild.monitor.helpers.dateTimeRightNow
 import wild.monitor.models.Job
@@ -60,6 +60,7 @@ class UpdateJobStatusControllerTest {
         every { projectRepository.findByProjectKey(existingProject.projectKey) } returns existingProject
         every { jobRepository.findTopByJobIdOrderByUpdatedOnDesc(eq(jobId)) } returns existingJob
         every { jobRepository.save(any<Job>()) } returns newJob
+        every { jobRepository.findByJobId(jobId) } returns listOf(existingJob, newJob)
 
         this.mockMvc.perform(patch("/jobs/${existingJob.jobId}")
                 .contentType(APPLICATION_JSON_UTF8_VALUE)
@@ -67,12 +68,12 @@ class UpdateJobStatusControllerTest {
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.jobId").value(newJob.jobId.toString()))
                 .andExpect(jsonPath("$.projectKey").value(existingProject.projectKey))
-                .andExpect(jsonPath("$.expiresOn").value(IsISODateTimeCloseTo.isISODateTimeCloseTo(anHourFromNow())))
-                .andExpect(jsonPath("$.createdOn").value(IsISODateTimeCloseTo.isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$.expiresOn").value(isISODateTimeCloseTo(anHourFromNow())))
+                .andExpect(jsonPath("$.createdOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
                 .andExpect(jsonPath("$.stateLog", hasSize<Any>(equalTo(2))))
                 .andExpect(jsonPath("$.stateLog[0].status").value("PENDING"))
-                .andExpect(jsonPath("$.stateLog[0].updatedOn").value(IsISODateTimeCloseTo.isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$.stateLog[0].updatedOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
                 .andExpect(jsonPath("$.stateLog[1].status").value("STARTED"))
-                .andExpect(jsonPath("$.stateLog[1].updatedOn").value(IsISODateTimeCloseTo.isISODateTimeCloseTo(dateTimeRightNow())))
+                .andExpect(jsonPath("$.stateLog[1].updatedOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
     }
 }

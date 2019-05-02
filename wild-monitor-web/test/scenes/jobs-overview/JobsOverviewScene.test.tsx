@@ -6,6 +6,7 @@ import {MemoryRouter} from "react-router";
 import {Job} from "../../../src/models/Job";
 import moment = require("moment");
 import {emptyPromiseOfJobs} from "../../helpers/Promises";
+import {sampleJobs} from "./JobFixtures";
 
 describe("Jobs Dashboard Scene", () => {
   let scene: ReactWrapper;
@@ -25,32 +26,7 @@ describe("Jobs Dashboard Scene", () => {
 
   describe("When project has jobs", () => {
     beforeEach(() => {
-      const jobs: Job[] = [
-        {
-          jobId: "1",
-          projectKey: "1p",
-          createdOn: "2019-01-01",
-          expiresOn: "2020-01-01",
-          stateLog: [
-            {
-              status: "PENDING",
-              updatedOn: "2019-01-01"
-            }
-          ]
-        },
-        {
-          jobId: "2",
-          projectKey: "2p",
-          createdOn: "2018-12-19",
-          expiresOn: "2019-01-01",
-          stateLog: [
-            {
-              status: "STARTED",
-              updatedOn: "2018-12-19"
-            }
-          ]
-        }
-      ];
+      const jobs: Job[] = sampleJobs();
 
       const promiseOfJobs: (projectKey: string) => Promise<Job[]> = () => Promise.resolve(jobs);
       scene = mount(<MemoryRouter initialEntries={["/"]} initialIndex={1}>
@@ -65,10 +41,8 @@ describe("Jobs Dashboard Scene", () => {
         scene.update();
         expect(findOrFail(scene, "[data-test='job-item-header']")
           .map(job => job.text())).toEqual(["PENDING", "STARTED"]);
-        expect(findOrFail(scene, "[data-test='job-item-id']")
-          .map(job => job.text())).toEqual(["1", "2"]);
         expect(findOrFail(scene, "[data-test='job-item-created-on']")
-          .map(job => job.text())).toEqual([`${relativeTimes[0]} (2019-01-01)`, `${relativeTimes[1]} (2018-12-19)`]);
+          .map(job => job.text())).toEqual([`Created ${relativeTimes[0]} (2019-01-01)`, `Created ${relativeTimes[1]} (2018-12-19)`]);
         done();
       });
     });

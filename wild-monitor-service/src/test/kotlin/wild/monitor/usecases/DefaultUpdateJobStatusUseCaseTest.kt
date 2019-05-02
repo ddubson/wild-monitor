@@ -2,7 +2,7 @@ package wild.monitor.usecases
 
 import io.mockk.every
 import io.mockk.mockk
-import org.assertj.core.api.Assertions.assertThat
+import io.mockk.verify
 import org.junit.jupiter.api.Test
 import wild.monitor.models.Job
 import wild.monitor.models.JobStatus
@@ -23,12 +23,10 @@ internal class DefaultUpdateJobStatusUseCaseTest {
             jobRepository.findTopByJobIdOrderByUpdatedOnDesc(any())
         } returns existingJob
 
-        every {
-            jobRepository.save(any<Job>())
-        } returns newReturnedJob
+        every { jobRepository.save(any<Job>()) } returns newReturnedJob
 
-        val returnedJob = updateJobStatusUseCase.updateJobStatus(existingJob.jobId.toString(), JobStatus.STARTED)
+        updateJobStatusUseCase.updateJobStatus(existingJob.jobId.toString(), JobStatus.STARTED)
 
-        assertThat(returnedJob).isEqualTo(newReturnedJob)
+        verify(atMost = 1) { jobRepository.save(any<Job>()) }
     }
 }

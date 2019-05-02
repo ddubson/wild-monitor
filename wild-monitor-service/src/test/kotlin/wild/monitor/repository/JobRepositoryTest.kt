@@ -30,11 +30,12 @@ internal class JobRepositoryTest {
     fun jobRepository_canFindASavedJobSuccessfully() {
         val project = Project(projectName = "test_project")
         testEntityManager.persist(project)
-        val existingProject = projectRepository.findAll()[0]
+        val existingProject = projectRepository.findAll().first()
         val job = Job(UUID.randomUUID(), JobStatus.PENDING, existingProject)
         testEntityManager.persist(job)
 
-        val existingJob = jobRepository.findByJobId(job.jobId)!!
+        val existingJobs = jobRepository.findByJobId(job.jobId)
+        val existingJob = existingJobs.first()
         assertThat(existingJob.dbId).isNotNull()
         assertThat(existingJob.jobId).isEqualTo(job.jobId)
         assertThat(existingJob.createdOn).isNotNull()
@@ -51,7 +52,8 @@ internal class JobRepositoryTest {
         val job = Job(UUID.randomUUID(), JobStatus.PENDING, existingProject)
         jobRepository.save(job)
 
-        val existingJob = jobRepository.findByJobId(job.jobId)!!
+        val existingJobs = jobRepository.findByJobId(job.jobId)
+        val existingJob = existingJobs.first()
         assertThat(existingJob.dbId).isNotNull()
         assertThat(existingJob.jobId).isEqualTo(job.jobId)
         assertThat(existingJob.createdOn).isNotNull()
