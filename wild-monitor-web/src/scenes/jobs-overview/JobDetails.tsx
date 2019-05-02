@@ -13,8 +13,8 @@ export const JobDetails = ({job}: JobDetailsProps) =>
     <h5 className="card-header" data-test="job-item-header"
         style={{
           backgroundColor: "black",
-          color: colorMap(job.stateLog[0].status),
-        }}>{job.stateLog[0].status}</h5>
+          color: colorMap(job.stateLog[job.stateLog.length - 1].status),
+        }}>{job.stateLog[job.stateLog.length - 1].status}</h5>
     <div className="card-body" data-test="job-item-body">
       {job.stateLog.map((jobStateLog: JobStateLog) =>
         <p key={shortid.generate()}
