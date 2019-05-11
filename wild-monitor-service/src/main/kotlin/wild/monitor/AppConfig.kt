@@ -3,13 +3,13 @@ package wild.monitor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
-import wild.monitor.controllers.ProjectResponse
-import wild.monitor.repositories.JobRepository
-import wild.monitor.repositories.ProjectRepository
-import wild.monitor.usecases.CreateProjectUseCase
-import wild.monitor.usecases.DefaultUpdateJobStatusUseCase
-import wild.monitor.usecases.UpdateJobStatusUseCase
-import wild.monitor.usecases.web.CreateProjectWebUseCase
+import wild.monitor.jobs.JobRepository
+import wild.monitor.projects.ProjectRepository
+import wild.monitor.projects.CreateProjectUseCase
+import wild.monitor.jobs.DefaultUpdateJobStatusUseCase
+import wild.monitor.jobs.UpdateJobStatusUseCase
+import wild.monitor.projects.web.CreateProjectWebUseCase
+import wild.monitor.projects.web.ProjectResponse
 
 @Configuration
 @Profile("default", "local", "test", "prod")
