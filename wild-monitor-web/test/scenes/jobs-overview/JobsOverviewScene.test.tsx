@@ -1,11 +1,12 @@
-import {findOrFail, getTextByClassName} from "../helpers/enzyme-helpers";
+import {findOrFail, getTextByClassName} from "../../helpers/enzyme-helpers";
 import {mount, ReactWrapper} from "enzyme";
-import JobsOverviewScene from "../../src/scenes/JobsOverviewScene";
+import JobsOverviewScene from "../../../src/scenes/jobs-overview/JobsOverviewScene";
 import * as React from "react";
 import {MemoryRouter} from "react-router";
-import {Job} from "../../src/models/Job";
+import {Job} from "../../../src/models/Job";
 import moment = require("moment");
-import {emptyPromiseOfJobs} from "../helpers/Promises";
+import {emptyPromiseOfJobs} from "../../helpers/Promises";
+import {sampleJobs} from "./JobFixtures";
 
 describe("Jobs Dashboard Scene", () => {
   let scene: ReactWrapper;
@@ -13,7 +14,7 @@ describe("Jobs Dashboard Scene", () => {
   describe("On page load", () => {
     beforeEach(() => {
       scene = mount(<MemoryRouter initialEntries={["/"]} initialIndex={1}>
-        <JobsOverviewScene location={{search: ""}} getJobsByProjectKey={emptyPromiseOfJobs} />
+        <JobsOverviewScene location={{search: ""}} getJobsByProjectKey={emptyPromiseOfJobs}/>
       </MemoryRouter>);
     });
 
@@ -25,15 +26,11 @@ describe("Jobs Dashboard Scene", () => {
 
   describe("When project has jobs", () => {
     beforeEach(() => {
-      const jobs: Job[] = [
-        {jobId: "1", projectKey: "1p", status: "PENDING", createdOn: "2019-01-01"},
-        {jobId: "2", projectKey: "2p", status: "STARTED", createdOn: "2018-12-19"}
-      ];
+      const jobs: Job[] = sampleJobs();
 
-      const promiseOfJobs: (projectKey: string) => Promise<Job[]> =
-        () => Promise.resolve(jobs);
+      const promiseOfJobs: (projectKey: string) => Promise<Job[]> = () => Promise.resolve(jobs);
       scene = mount(<MemoryRouter initialEntries={["/"]} initialIndex={1}>
-        <JobsOverviewScene location={{search: "?projectKey=1p"}} getJobsByProjectKey={promiseOfJobs} />
+        <JobsOverviewScene location={{search: "?projectKey=1p"}} getJobsByProjectKey={promiseOfJobs}/>
       </MemoryRouter>);
     });
 
@@ -44,10 +41,8 @@ describe("Jobs Dashboard Scene", () => {
         scene.update();
         expect(findOrFail(scene, "[data-test='job-item-header']")
           .map(job => job.text())).toEqual(["PENDING", "STARTED"]);
-        expect(findOrFail(scene, "[data-test='job-item-id']")
-          .map(job => job.text())).toEqual(["1", "2"]);
         expect(findOrFail(scene, "[data-test='job-item-created-on']")
-          .map(job => job.text())).toEqual([`${relativeTimes[0]} (2019-01-01)`, `${relativeTimes[1]} (2018-12-19)`]);
+          .map(job => job.text())).toEqual([`Created ${relativeTimes[0]} (2019-01-01)`, `Created ${relativeTimes[1]} (2018-12-19)`]);
         done();
       });
     });

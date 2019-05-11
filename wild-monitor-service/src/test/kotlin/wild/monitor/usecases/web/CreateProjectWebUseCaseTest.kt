@@ -1,4 +1,4 @@
-package wild.monitor.usecases
+package wild.monitor.usecases.web
 
 import io.mockk.every
 import io.mockk.mockk
@@ -10,7 +10,6 @@ import wild.monitor.ProjectNameTakenException
 import wild.monitor.controllers.ProjectResponse
 import wild.monitor.models.Project
 import wild.monitor.repositories.ProjectRepository
-import wild.monitor.usecases.web.CreateProjectWebUseCase
 
 class CreateProjectWebUseCaseTest {
     private lateinit var projectRepository: ProjectRepository

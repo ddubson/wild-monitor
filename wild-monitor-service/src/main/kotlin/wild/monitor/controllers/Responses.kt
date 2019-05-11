@@ -19,19 +19,26 @@ data class ProjectResponse(val id: String,
 }
 
 data class JobResponse(val jobId: String,
-                       val status: JobStatus,
                        val projectKey: String,
+                       val createdOn: String,
                        val expiresOn: String,
-                       val createdOn: String) {
+                       val stateLog: List<JobStateLogResponse>) {
     companion object {
-        fun fromJob(job: Job): JobResponse =
-                JobResponse(jobId = job.jobId.toString(),
-                        status = job.status,
-                        projectKey = job.project.projectKey,
-                        expiresOn = job.expiresOn.format(DateTimeFormatter.ISO_DATE_TIME),
-                        createdOn = job.createdOn.format(DateTimeFormatter.ISO_DATE_TIME))
+        fun fromGroupedJobs(jobs: List<Job>): JobResponse =
+                JobResponse(jobId = jobs[0].jobId.toString(),
+                        projectKey = jobs[0].project.projectKey,
+                        createdOn = jobs[0].createdOn.format(DateTimeFormatter.ISO_DATE_TIME),
+                        expiresOn = jobs[jobs.lastIndex].expiresOn.format(DateTimeFormatter.ISO_DATE_TIME),
+                        stateLog = jobs.map {
+                            JobStateLogResponse(
+                                    it.status,
+                                    it.updatedOn.format(DateTimeFormatter.ISO_DATE_TIME))
+                        })
     }
 }
+
+data class JobStateLogResponse(val status: JobStatus,
+                               val updatedOn: String)
 
 data class ErrorResponse(val message: String = "An error has occurred.",
                          val howToRectify: String? = "No specific instructions specified.")

@@ -2,7 +2,6 @@ package wild.monitor.controllers
 
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -25,7 +24,7 @@ class CreateNewJobController(val projectRepository: ProjectRepository,
                 ?: throw ProjectNotFoundException()
 
         return ResponseEntity.ok(
-                JobResponse.fromJob(
-                        jobRepository.save(Job(UUID.randomUUID(), JobStatus.PENDING, project))))
+                JobResponse.fromGroupedJobs(
+                        listOf(jobRepository.save(Job(UUID.randomUUID(), JobStatus.PENDING, project)))))
     }
 }

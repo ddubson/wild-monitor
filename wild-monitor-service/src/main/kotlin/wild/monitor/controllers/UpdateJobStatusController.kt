@@ -8,18 +8,19 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import wild.monitor.models.JobStatus
+import wild.monitor.repositories.JobRepository
 import wild.monitor.usecases.UpdateJobStatusUseCase
+import java.util.*
 
 @RestController
-class UpdateJobStatusController(private val updateJobStatusUseCase: UpdateJobStatusUseCase) {
+class UpdateJobStatusController(private val updateJobStatusUseCase: UpdateJobStatusUseCase,
+                                private val jobRepository: JobRepository) {
     @PatchMapping("/jobs/{jobId}",
             consumes = [MediaType.APPLICATION_JSON_UTF8_VALUE],
             produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
     fun updateJobStatus(@PathVariable("jobId") jobId: String,
                         @RequestBody jobStatusRequest: UpdateJobStatusRequest): ResponseEntity<JobResponse> {
-        return ok(
-                JobResponse.fromJob(
-                        updateJobStatusUseCase.updateJobStatus(jobId,
-                                JobStatus.valueOf(jobStatusRequest.newStatus))))
+        updateJobStatusUseCase.updateJobStatus(jobId, JobStatus.valueOf(jobStatusRequest.newStatus))
+        return ok(JobResponse.fromGroupedJobs(jobRepository.findByJobId(UUID.fromString(jobId))))
     }
 }
