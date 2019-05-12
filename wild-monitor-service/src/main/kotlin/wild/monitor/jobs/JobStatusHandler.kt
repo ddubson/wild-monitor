@@ -7,9 +7,9 @@ fun Job.progressToNextState(nextStatus: JobStatus): Job {
         JobStatus.SUCCEEDED
         -> if (this.status == JobStatus.STARTED)
             Job(jobId = this.jobId, status = JobStatus.SUCCEEDED, project = this.project) else unknownJobStatus()
-        JobStatus.FAILED -> if(this.status == JobStatus.STARTED)
+        JobStatus.FAILED -> if (this.status == JobStatus.STARTED)
             Job(jobId = this.jobId, status = JobStatus.FAILED, project = this.project) else unknownJobStatus()
-        JobStatus.EXPIRED -> if(this.status == JobStatus.STARTED)
+        JobStatus.EXPIRED -> if (this.status == JobStatus.STARTED)
             Job(jobId = this.jobId, status = JobStatus.EXPIRED, project = this.project) else unknownJobStatus()
         else -> unknownJobStatus()
     }

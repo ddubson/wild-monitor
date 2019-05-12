@@ -20,8 +20,7 @@ import javax.persistence.Table
         pkJoinColumns = [PrimaryKeyJoinColumn(name = "meta_db_id", referencedColumnName = "db_id")])
 class Job(@Column(name="job_id") val jobId: UUID,
           val status: JobStatus,
-          @ManyToOne
-               val project: Project) {
+          @ManyToOne val project: Project) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "db_id")

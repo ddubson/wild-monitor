@@ -2,6 +2,7 @@ package wild.monitor.projects.web
 
 import io.mockk.every
 import io.mockk.mockk
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,11 +10,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
+import org.springframework.restdocs.RestDocumentationContextProvider
+import org.springframework.restdocs.RestDocumentationExtension
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
+import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.web.context.WebApplicationContext
 import wild.monitor.helpers.IsISODateTimeCloseTo.Companion.isISODateTimeCloseTo
 import wild.monitor.projects.CreateProjectUseCase
 import wild.monitor.projects.NoProjectNameSuppliedException
@@ -22,7 +30,7 @@ import wild.monitor.projects.ProjectNameTakenException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-@ExtendWith(SpringExtension::class)
+@ExtendWith(RestDocumentationExtension::class, SpringExtension::class)
 @WebMvcTest(CreateNewProjectController::class)
 class CreateNewProjectControllerTest {
     @TestConfiguration
@@ -31,11 +39,18 @@ class CreateNewProjectControllerTest {
         fun createProjectUseCase(): CreateProjectUseCase<ProjectResponse> = mockk()
     }
 
-    @Autowired
     lateinit var mockMvc: MockMvc
 
     @Autowired
     lateinit var createNewProjectUseCase: CreateProjectUseCase<ProjectResponse>
+
+    @BeforeEach
+    fun beforeEach(webApplicationContext: WebApplicationContext,
+                   restDocumentation: RestDocumentationContextProvider) {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+                .apply<DefaultMockMvcBuilder>(documentationConfiguration(restDocumentation))
+                .build()
+    }
 
     @Test
     fun createNewProject_whenProvidedAName_shouldReturnProjectDetails() {
@@ -58,6 +73,7 @@ class CreateNewProjectControllerTest {
                 .andExpect(jsonPath("$.projectName").value(projectName))
                 .andExpect(jsonPath("$.createdOn")
                         .value(isISODateTimeCloseTo(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))))
+                .andDo(document("creating-a-project"))
     }
 
     @Test

@@ -1,0 +1,3 @@
+# Wild Monitor Service API
+
+include::{snippets}/creating-a-project/curl-request.adoc[]
