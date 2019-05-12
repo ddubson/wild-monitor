@@ -24,10 +24,8 @@ jobs:
         - export PATH=$PATH:$TRAVIS_BUILD_DIR/wild-monitor-web/node_modules/.bin
         - ./gradlew :wild-monitor-web:yarn_install
       script:
-        - ./gradlew :wild-monitor-web:yarnLint
-        - ./gradlew :wild-monitor-web:yarnTest
-        - ./gradlew :wild-monitor-web:yarnBuildProd
-        - ./gradlew :wild-monitor-service:build
+        - ./gradlew --parallel :wild-monitor-web:yarnLint :wild-monitor-web:yarnTest
+        - ./gradlew --parallel :wild-monitor-web:yarnBuildProd :wild-monitor-service:build
       deploy:
         provider: cloudfoundry
         api: https://api.run.pcfone.io
