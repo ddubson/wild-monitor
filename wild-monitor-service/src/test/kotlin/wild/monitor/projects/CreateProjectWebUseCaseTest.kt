@@ -6,7 +6,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import wild.monitor.ProjectNameTakenException
 import wild.monitor.projects.web.CreateProjectWebUseCase
 import wild.monitor.projects.web.ProjectResponse
 

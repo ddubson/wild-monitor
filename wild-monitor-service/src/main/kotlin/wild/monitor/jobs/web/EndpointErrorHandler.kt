@@ -3,7 +3,7 @@ package wild.monitor.jobs.web
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
-import wild.monitor.JobNotFoundException
+import wild.monitor.jobs.JobNotFoundException
 
 @ControllerAdvice
 public class ErrorHandlerController {

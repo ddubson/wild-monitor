@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import wild.monitor.ProjectNotFoundException
 import wild.monitor.jobs.JobRepository
+import wild.monitor.projects.ProjectNotFoundException
 import wild.monitor.projects.ProjectRepository
 
 @RestController

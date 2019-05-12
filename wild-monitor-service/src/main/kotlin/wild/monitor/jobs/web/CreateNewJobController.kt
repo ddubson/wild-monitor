@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import wild.monitor.ProjectNotFoundException
 import wild.monitor.jobs.Job
 import wild.monitor.jobs.JobRepository
 import wild.monitor.jobs.JobStatus
+import wild.monitor.projects.ProjectNotFoundException
 import wild.monitor.projects.ProjectRepository
 import java.util.*
 

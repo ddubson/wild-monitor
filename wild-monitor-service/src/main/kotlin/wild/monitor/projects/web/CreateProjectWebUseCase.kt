@@ -1,9 +1,9 @@
 package wild.monitor.projects.web
 
-import wild.monitor.NoProjectNameSuppliedException
-import wild.monitor.ProjectNameTakenException
 import wild.monitor.projects.CreateProjectUseCase
+import wild.monitor.projects.NoProjectNameSuppliedException
 import wild.monitor.projects.Project
+import wild.monitor.projects.ProjectNameTakenException
 import wild.monitor.projects.ProjectRepository
 
 class CreateProjectWebUseCase(private val projectRepository: ProjectRepository) : CreateProjectUseCase<ProjectResponse> {

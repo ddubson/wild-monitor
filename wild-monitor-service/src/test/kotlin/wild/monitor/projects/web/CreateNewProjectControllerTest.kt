@@ -14,11 +14,11 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import wild.monitor.NoProjectNameSuppliedException
-import wild.monitor.ProjectNameTakenException
 import wild.monitor.helpers.IsISODateTimeCloseTo.Companion.isISODateTimeCloseTo
 import wild.monitor.projects.CreateProjectUseCase
+import wild.monitor.projects.NoProjectNameSuppliedException
 import wild.monitor.projects.Project
+import wild.monitor.projects.ProjectNameTakenException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
