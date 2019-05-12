@@ -14,6 +14,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import wild.monitor.helpers.IsISODateTimeCloseTo.Companion.isISODateTimeCloseTo
@@ -69,6 +70,26 @@ internal class CreateNewJobControllerTest {
                 .andExpect(jsonPath("$.stateLog", hasSize<Any>(equalTo(1))))
                 .andExpect(jsonPath("$.stateLog[0].status").value("PENDING"))
                 .andExpect(jsonPath("$.stateLog[0].updatedOn").value(isISODateTimeCloseTo(dateTimeRightNow())))
+    }
+
+    @Test
+    fun createNewJob_whenProvidedAnExistingProjectKey_createsANewJobWithASimpleJobIdResponse() {
+        val existingProject = Project("Test Project")
+        val newJob = Job(UUID.randomUUID(), JobStatus.PENDING, existingProject)
+        every { projectRepository.findByProjectKey(existingProject.projectKey) } returns existingProject
+        every { jobRepository.save(any<Job>()) } returns newJob
+
+        val requestBody = """
+                { "projectKey": "${existingProject.projectKey}" }
+            """.trimIndent()
+
+        this.mockMvc.perform(post("/jobs")
+                .param("justJobId", "true")
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .content(requestBody))
+                .andExpect(status().isOk)
+                .andExpect(content().contentType(MediaType.TEXT_PLAIN_VALUE))
+                .andExpect(content().string(newJob.jobId.toString()))
     }
 
     @Test
